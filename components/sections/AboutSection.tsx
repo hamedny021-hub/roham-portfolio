@@ -17,7 +17,7 @@ export default function AboutSection() {
       {/* Plays once, freezes on last frame. Let the video breathe. */}
       <VideoBackground
         src="/videos/02-grinding.MP4"
-        darkness={0.55}
+        darkness={0.30}
         warmTint
       />
 
@@ -112,7 +112,7 @@ export default function AboutSection() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 1.0, delay: 0.5, ease: EASE }}
         >
-          <p className="font-bodoni font-black gold-shimmer leading-none"
+          <p className="font-cormorant font-bold gold-shimmer leading-none"
             style={{ fontSize: "clamp(2.2rem, 4vw, 3rem)" }}>
             7+
           </p>

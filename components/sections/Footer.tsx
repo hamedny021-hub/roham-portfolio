@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand */}
           <a
             href="#hero"
-            className="font-bodoni text-[20px] tracking-[0.35em] text-ivory/45 hover:text-gold/70 transition-colors duration-500"
+            className="font-cormorant font-semibold text-[22px] tracking-[0.35em] text-ivory/45 hover:text-gold/70 transition-colors duration-500"
           >
             ROHAM
           </a>
@@ -33,7 +33,7 @@ export default function Footer() {
               <a
                 key={l}
                 href={`#${l.toLowerCase()}`}
-                className="font-inter text-[8px] tracking-[0.25em] uppercase text-ivory/15 hover:text-gold/40 transition-colors duration-400"
+                className="font-grotesk text-[8px] tracking-[0.25em] uppercase text-ivory/15 hover:text-gold/40 transition-colors duration-400"
               >
                 {l}
               </a>

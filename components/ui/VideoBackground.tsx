@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface VideoBackgroundProps {
   src: string;
-  /** 0–1 base darkness overlay. Default 0.65 */
+  /** 0–1 base darkness overlay. Default 0.38 */
   darkness?: number;
   /** Subtle warm espresso tint over the footage */
   warmTint?: boolean;
@@ -26,7 +26,7 @@ interface VideoBackgroundProps {
  */
 export default function VideoBackground({
   src,
-  darkness = 0.65,
+  darkness = 0.38,
   warmTint = false,
   className = "",
 }: VideoBackgroundProps) {
@@ -77,12 +77,15 @@ export default function VideoBackground({
     <div className={`absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
       {/* Video — no loop, freezes on final frame */}
       {/* scale-[0.88] on mobile = 12% zoom-out so more footage is visible.
-          md:scale-100 restores full-size on desktop — no change there. */}
+          md:scale-100 restores full-size on desktop — no change there.
+          CSS filter: boosts perceived brightness + colour richness so the
+          coffee/espresso detail reads on all screens, especially dark iPhones. */}
       <video
         ref={videoRef}
         className={`absolute inset-0 w-full h-full object-cover scale-[0.88] md:scale-100 transition-opacity duration-[1200ms] ease-in-out ${
           ready ? "opacity-100" : "opacity-0"
         }`}
+        style={{ filter: "brightness(1.35) contrast(1.08) saturate(1.10)" }}
         muted
         playsInline
         preload="none"
@@ -90,26 +93,29 @@ export default function VideoBackground({
         <source src={src} type="video/mp4" />
       </video>
 
-      {/* Base dark overlay */}
+      {/* Base dark overlay — significantly reduced so video detail is visible */}
       <div
         className="absolute inset-0 z-10"
         style={{ background: `rgba(5,5,5,${darkness})` }}
       />
 
-      {/* Cinematic vignette — top/bottom fades + radial edge darkening */}
+      {/* Cinematic vignette — top/bottom fades + radial edge darkening.
+          Previous: top 0.55, bottom 0.90 — too dark, crushed footage.
+          Now:       top 0.22, bottom 0.62 — coffee detail visible while
+          text areas remain dark enough for perfect readability. */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
           background: `
             linear-gradient(to bottom,
-              rgba(5,5,5,0.55) 0%,
-              rgba(5,5,5,0.00) 20%,
-              rgba(5,5,5,0.00) 70%,
-              rgba(5,5,5,0.90) 100%
+              rgba(5,5,5,0.22) 0%,
+              rgba(5,5,5,0.00) 22%,
+              rgba(5,5,5,0.00) 68%,
+              rgba(5,5,5,0.62) 100%
             ),
             radial-gradient(ellipse at 50% 50%,
-              transparent 38%,
-              rgba(5,5,5,0.40) 100%
+              transparent 40%,
+              rgba(5,5,5,0.22) 100%
             )
           `,
         }}
@@ -119,7 +125,7 @@ export default function VideoBackground({
       {warmTint && (
         <div
           className="absolute inset-0 z-10 pointer-events-none"
-          style={{ background: "rgba(28,15,8,0.18)", mixBlendMode: "multiply" }}
+          style={{ background: "rgba(28,15,8,0.12)", mixBlendMode: "multiply" }}
         />
       )}
     </div>

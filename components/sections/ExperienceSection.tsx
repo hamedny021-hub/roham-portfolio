@@ -42,7 +42,7 @@ export default function ExperienceSection() {
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
     >
       {/* 05-tamping.MP4 */}
-      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.62} warmTint />
+      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.38} warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
@@ -87,7 +87,7 @@ export default function ExperienceSection() {
 
               {/* Role + venue */}
               <div>
-                <p className="font-bodoni text-base md:text-lg text-ivory/85 leading-tight">
+                <p className="font-cormorant font-semibold text-base md:text-lg text-ivory/85 leading-tight">
                   {job.role}
                 </p>
                 <p className="font-inter text-[11px] text-ivory/35 font-light mt-0.5 tracking-[0.02em]">
@@ -113,14 +113,14 @@ export default function ExperienceSection() {
             ["6–8", "Team Size"],
           ].map(([n, l]) => (
             <div key={l} className="flex flex-col gap-1">
-              <span className="font-bodoni text-xl font-black gold-shimmer leading-none">{n}</span>
+              <span className="font-cormorant font-bold text-xl gold-shimmer leading-none">{n}</span>
               <span className="font-inter text-[8px] tracking-[0.3em] uppercase text-ivory/25">{l}</span>
             </div>
           ))}
 
           {/* Education — inline, minimal */}
           <div className="hidden md:flex flex-col gap-1 ml-4 pl-8 border-l border-white/6">
-            <span className="font-bodoni text-sm text-ivory/55 leading-tight italic">
+            <span className="font-cormorant text-sm text-ivory/55 leading-tight italic">
               Hotel Management
             </span>
             <span className="font-inter text-[8px] tracking-[0.2em] uppercase text-ivory/22">

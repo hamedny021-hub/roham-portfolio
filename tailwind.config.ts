@@ -12,6 +12,7 @@ const config: Config = {
         bodoni:    ["var(--font-bodoni)",    "Georgia", "serif"],
         cormorant: ["var(--font-cormorant)", "Georgia", "serif"],
         inter:     ["var(--font-inter)",     "system-ui", "sans-serif"],
+        grotesk:   ["var(--font-grotesk)",   "system-ui", "sans-serif"],
       },
       colors: {
         gold: {

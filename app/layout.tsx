@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Cormorant_Garamond, Inter } from "next/font/google";
+import { Bodoni_Moda, Cormorant_Garamond, Inter, Space_Grotesk } from "next/font/google";
 import ScrollProgress    from "@/components/ui/ScrollProgress";
 import AmbientParticles  from "@/components/ui/AmbientParticles";
 import CustomCursor      from "@/components/ui/CustomCursor";
@@ -31,6 +31,16 @@ const inter = Inter({
   weight: ["300", "400", "500", "600"],
 });
 
+// Space Grotesk — technical accent font for labels, numbers, section tags.
+// Its geometric precision contrasts beautifully with Cormorant's calligraphic curves,
+// giving UI micro-labels a crisp, modern edge while the headline remains classical.
+const grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-grotesk",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "ROHAM — Barista · Hospitality Professional · Creative",
   description:
@@ -46,7 +56,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} bg-ink text-ivory antialiased grain-overlay`}>
+      <body className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} ${grotesk.variable} bg-ink text-ivory antialiased grain-overlay`}>
         <CustomCursor />
         <ScrollProgress />
         <AmbientParticles />

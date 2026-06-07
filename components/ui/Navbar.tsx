@@ -32,7 +32,7 @@ export default function Navbar() {
           scrolled ? "glass-nav" : ""
         }`}
       >
-        <a href="#hero" className="font-bodoni text-[22px] tracking-[0.28em] text-ivory hover:text-gold transition-colors duration-300">
+        <a href="#hero" className="font-cormorant font-semibold text-[22px] tracking-[0.28em] text-ivory hover:text-gold transition-colors duration-300">
           ROHAM
         </a>
 
@@ -41,7 +41,7 @@ export default function Navbar() {
           {links.map(l => (
             <li key={l.href}>
               <a href={l.href}
-                className="font-inter text-[10px] tracking-[0.22em] uppercase text-ivory/50 hover:text-gold/90 transition-colors duration-300 hover-gold">
+                className="font-grotesk text-[10px] tracking-[0.22em] uppercase text-ivory/50 hover:text-gold/90 transition-colors duration-300 hover-gold">
                 {l.label}
               </a>
             </li>
@@ -72,7 +72,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setOpen(false)}
-                className="font-bodoni text-4xl text-ivory hover:text-gold transition-colors duration-300">
+                className="font-cormorant font-semibold text-5xl text-ivory hover:text-gold transition-colors duration-300">
                 {l.label}
               </motion.a>
             ))}

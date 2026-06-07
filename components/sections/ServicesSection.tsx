@@ -32,7 +32,7 @@ export default function ServicesSection() {
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
     >
       {/* 03-portafilter.MP4 */}
-      <VideoBackground src="/videos/03-portafilter.MP4" darkness={0.58} warmTint />
+      <VideoBackground src="/videos/03-portafilter.MP4" darkness={0.32} warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
@@ -70,11 +70,11 @@ export default function ServicesSection() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 1.0, delay: 0.2 + i * 0.12, ease: EASE }}
             >
-              <span className="font-bodoni text-4xl font-black text-gold/10 group-hover:text-gold/20 transition-colors duration-500 leading-none mt-1 select-none">
+              <span className="font-grotesk text-4xl font-bold text-gold/10 group-hover:text-gold/20 transition-colors duration-500 leading-none mt-1 select-none">
                 {o.n}
               </span>
               <div>
-                <p className="font-bodoni text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
+                <p className="font-cormorant font-semibold text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
                   {o.title}
                 </p>
                 <p className="font-inter text-[11px] tracking-[0.12em] text-ivory/28 font-light">

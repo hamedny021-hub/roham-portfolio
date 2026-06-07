@@ -68,7 +68,7 @@ export default function ContactSection() {
     >
       {/* 06-extraction.MP4 — the climax of the coffee story.
           darkness 0.48: lighter than before so the extraction footage dominates. */}
-      <VideoBackground src="/videos/06-extraction.MP4" darkness={0.48} warmTint />
+      <VideoBackground src="/videos/06-extraction.MP4" darkness={0.25} warmTint />
 
       {/* Top crossfade from Experience */}
       <div
