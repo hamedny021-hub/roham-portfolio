@@ -10,8 +10,8 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 // No bullet points. The tamping video conveys the precision.
 const jobs = [
   {
-    role:    "Team Leader",
-    company: "Naan & Kabob Restaurant",
+    role:    "Supervisor",
+    company: "Naan Kabob",
     location:"Toronto, ON",
     period:  "2025 — Present",
   },
