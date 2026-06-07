@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Inter } from "next/font/google";
+import ScrollProgress    from "@/components/ui/ScrollProgress";
+import AmbientParticles from "@/components/ui/AmbientParticles";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -33,6 +35,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${bodoni.variable} ${inter.variable} bg-ink text-ivory antialiased grain-overlay`}>
+        <ScrollProgress />
+        <AmbientParticles />
+
+        {/* Slow drifting warm bloom — barely visible, keeps atmosphere alive */}
+        <div
+          aria-hidden="true"
+          className="fixed inset-0 pointer-events-none"
+          style={{
+            zIndex: 9989,
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(212,168,67,0.028) 0%, transparent 100%)",
+            animation: "bloomDrift 22s ease-in-out infinite",
+          }}
+        />
+
         {children}
       </body>
     </html>

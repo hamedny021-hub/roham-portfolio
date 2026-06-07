@@ -1,106 +1,95 @@
 "use client";
 
-import SectionReveal from "@/components/ui/SectionReveal";
+import { motion }        from "framer-motion";
+import SectionReveal     from "@/components/ui/SectionReveal";
+import VideoBackground   from "@/components/ui/VideoBackground";
 
-const services = [
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+// Three disciplines — condensed from six. The video tells the rest.
+const offerings = [
   {
-    n: "01",
-    title: "Specialty Coffee Consulting",
-    desc: "From espresso program design to equipment selection and workflow optimization. I help cafés, restaurants, and hotels build a coffee offering that matches their brand and guest expectations.",
-    tags: ["Espresso Programs", "Menu Development", "Equipment Setup"],
+    n:    "01",
+    title:"Specialty Coffee",
+    note: "Espresso programs · Menu development · Equipment setup",
   },
   {
-    n: "02",
-    title: "Barista Training & Coaching",
-    desc: "Hands-on training programs for front-of-house staff — covering extraction technique, milk texturing, latte art, and the mindset behind consistent, high-quality service.",
-    tags: ["One-on-One Coaching", "Team Workshops", "Service Standards"],
+    n:    "02",
+    title:"Hospitality Operations",
+    note: "Team leadership · Service standards · Quality control",
   },
   {
-    n: "03",
-    title: "Hospitality Operations",
-    desc: "Drawing from leadership roles across high-volume restaurants and luxury hotel beverage outlets, I help teams run tighter, smoother, and more guest-focused operations.",
-    tags: ["Team Leadership", "SOP Development", "Quality Control"],
-  },
-  {
-    n: "04",
-    title: "Guest Experience Design",
-    desc: "Mapping and refining the guest journey — from first impression to final goodbye. Every touchpoint is an opportunity to create loyalty. I help you find and own those moments.",
-    tags: ["Journey Mapping", "Service Design", "Complaint Resolution"],
-  },
-  {
-    n: "05",
-    title: "Beverage Menu Curation",
-    desc: "Seasonal menu development for cafés, hotel F&B outlets, and restaurant programs. Balancing trend awareness with operational practicality and brand coherence.",
-    tags: ["Seasonal Menus", "Signature Drinks", "Cost Optimization"],
-  },
-  {
-    n: "06",
-    title: "Brand Culture Development",
-    desc: "Coffee culture is an identity. I help hospitality businesses articulate and live the values that set them apart — through their product, their team, and their space.",
-    tags: ["Brand Values", "Staff Culture", "Identity Alignment"],
+    n:    "03",
+    title:"Training & Culture",
+    note: "Barista coaching · Workshops · Brand values",
   },
 ];
 
 export default function ServicesSection() {
   return (
-    <section id="services" className="relative py-32 md:py-52 bg-ink-mid overflow-hidden">
-      <div className="absolute top-0 inset-x-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,67,0.18), transparent)" }} />
+    <section
+      id="services"
+      className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
+    >
+      {/* 03-portafilter.MP4 */}
+      <VideoBackground src="/videos/03-portafilter.MP4" darkness={0.58} warmTint />
 
-      <div className="max-w-7xl mx-auto px-8 md:px-16">
+      <div
+        className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, #050505, transparent)" }}
+      />
+
+      {/* Content — bottom-left, editorial caption */}
+      <div className="relative z-30 w-full px-8 md:px-16 pb-20 md:pb-28">
 
         <SectionReveal>
-          <div className="section-label mb-12">
+          <div className="section-label mb-10">
             <span>02 — Services</span>
             <div className="gold-line" />
           </div>
         </SectionReveal>
 
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
-          <SectionReveal delay={0.1}>
-            <h2 className="font-bodoni leading-tight text-ivory"
-              style={{ fontSize: "clamp(2rem, 5vw, 3.8rem)" }}>
-              What I bring<br />
-              to the <span className="italic text-gold">table.</span>
-            </h2>
-          </SectionReveal>
-          <SectionReveal delay={0.2}>
-            <p className="font-inter text-[11px] tracking-[0.2em] uppercase text-ivory/25 max-w-xs">
-              Built from 7+ years of real-world experience
-            </p>
-          </SectionReveal>
-        </div>
+        <SectionReveal delay={0.1}>
+          <h2
+            className="section-title text-ivory mb-14 md:mb-16"
+            style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)" }}
+          >
+            The craft.<br />
+            <em className="serif-italic text-gold not-italic">The offering.</em>
+          </h2>
+        </SectionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-border">
-          {services.map((s, i) => (
-            <SectionReveal key={s.n} delay={i * 0.07}>
-              <div className="group bg-ink-mid p-9 md:p-10 card-hover relative overflow-hidden h-full">
-                {/* Bottom gold reveal */}
-                <div className="absolute bottom-0 left-0 h-px w-0 group-hover:w-full transition-all duration-700"
-                  style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,67,0.6), transparent)", transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }} />
-
-                <p className="font-bodoni text-5xl font-bold text-ink-border2 group-hover:text-gold/15 transition-colors duration-500 mb-5 leading-none">
-                  {s.n}
+        {/* Three disciplines — vertical editorial list */}
+        <div className="flex flex-col gap-8 max-w-lg">
+          {offerings.map((o, i) => (
+            <motion.div
+              key={o.n}
+              className="flex items-start gap-7 group"
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 1.0, delay: 0.2 + i * 0.12, ease: EASE }}
+            >
+              <span className="font-bodoni text-4xl font-black text-gold/10 group-hover:text-gold/20 transition-colors duration-500 leading-none mt-1 select-none">
+                {o.n}
+              </span>
+              <div>
+                <p className="font-bodoni text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
+                  {o.title}
                 </p>
-                <h3 className="font-bodoni text-xl md:text-2xl text-ivory/90 group-hover:text-gold transition-colors duration-400 mb-4 leading-snug">
-                  {s.title}
-                </h3>
-                <p className="font-inter text-[13px] leading-[1.8] text-ivory/38 font-light mb-7">
-                  {s.desc}
+                <p className="font-inter text-[11px] tracking-[0.12em] text-ivory/28 font-light">
+                  {o.note}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {s.tags.map(t => (
-                    <span key={t} className="skill-tag">{t}</span>
-                  ))}
-                </div>
               </div>
-            </SectionReveal>
+            </motion.div>
           ))}
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,67,0.18), transparent)" }} />
+      <div
+        className="absolute bottom-0 inset-x-0 h-48 z-20 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #050505)" }}
+      />
     </section>
   );
 }

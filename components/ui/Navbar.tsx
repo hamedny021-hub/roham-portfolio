@@ -29,7 +29,7 @@ export default function Navbar() {
         transition={{ duration: 1.1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between
           px-8 md:px-14 py-5 transition-all duration-700 ${
-          scrolled ? "bg-ink/92 backdrop-blur-xl border-b border-ink-border" : ""
+          scrolled ? "glass-nav" : ""
         }`}
       >
         <a href="#hero" className="font-bodoni text-[22px] tracking-[0.28em] text-ivory hover:text-gold transition-colors duration-300">

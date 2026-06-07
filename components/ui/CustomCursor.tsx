@@ -6,7 +6,7 @@ export default function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const pos     = useRef({ x: 0, y: 0 });
-  const ring    = useRef({ x: 0, y: 0 });
+  const ringPos = useRef({ x: 0, y: 0 });
   const rafId   = useRef<number>(0);
   const hovered = useRef(false);
 
@@ -21,10 +21,10 @@ export default function CustomCursor() {
 
     const animate = () => {
       const ease = hovered.current ? 0.09 : 0.13;
-      ring.current.x += (pos.current.x - ring.current.x) * ease;
-      ring.current.y += (pos.current.y - ring.current.y) * ease;
+      ringPos.current.x += (pos.current.x - ringPos.current.x) * ease;
+      ringPos.current.y += (pos.current.y - ringPos.current.y) * ease;
       const r = ringRef.current!;
-      r.style.transform = `translate(${ring.current.x - 20}px, ${ring.current.y - 20}px)`;
+      r.style.transform = `translate(${ringPos.current.x - 20}px, ${ringPos.current.y - 20}px)`;
       rafId.current = requestAnimationFrame(animate);
     };
 

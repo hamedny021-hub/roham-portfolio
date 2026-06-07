@@ -6,20 +6,36 @@
    ROOT TOKENS — Single source of truth
 ───────────────────────────────────────────────────── */
 :root {
+  /* Gold palette */
   --gold:        #D4A843;
   --gold-light:  #F0CC7A;
   --gold-pale:   #F7E4B0;
   --gold-dim:    #9A7830;
+  --gold-muted:  #6B5520;
+
+  /* Ivory palette */
   --ivory:       #F9F5EE;
   --ivory-mid:   #D8D0C0;
   --ivory-low:   #A09080;
+  --cream:       #F2EAD8;
+
+  /* Ink palette */
   --ink:         #050505;
   --ink-mid:     #0E0E0E;
   --ink-soft:    #161616;
   --ink-border:  #222222;
   --ink-border2: #2C2C2C;
-  --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-back:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Espresso — warm brown tones for depth & tinting */
+  --espresso:       #2C1810;
+  --espresso-mid:   #3D2218;
+  --espresso-light: #5C3825;
+
+  /* Easing */
+  --ease-expo:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-cinematic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in-expo:  cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 /* ─────────────────────────────────────────────────────
@@ -44,7 +60,7 @@ body {
 /* ─────────────────────────────────────────────────────
    SCROLLBAR
 ───────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: var(--ink); }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--gold-dim), var(--gold));
@@ -68,7 +84,7 @@ body {
   inset: -50%;
   width: 200%;
   height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 300px 300px;
   pointer-events: none;
@@ -90,13 +106,13 @@ body {
 .gold-shimmer {
   background: linear-gradient(
     110deg,
-    var(--gold-dim)  0%,
-    var(--gold)      25%,
+    var(--gold-dim)   0%,
+    var(--gold)       25%,
     var(--gold-light) 48%,
-    var(--gold-pale) 52%,
+    var(--gold-pale)  52%,
     var(--gold-light) 55%,
-    var(--gold)      75%,
-    var(--gold-dim)  100%
+    var(--gold)       75%,
+    var(--gold-dim)   100%
   );
   background-size: 250% auto;
   -webkit-background-clip: text;
@@ -119,6 +135,20 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
   flex-shrink: 0;
+}
+
+/* Expanding gold line — draws from left on hover or trigger */
+.gold-line-expand {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.7s var(--ease-expo);
+}
+.gold-line-expand.active,
+*:hover > .gold-line-expand {
+  transform: scaleX(1);
 }
 
 /* ─────────────────────────────────────────────────────
@@ -144,7 +174,7 @@ body {
    VIDEO OVERLAY — cinematic depth
 ───────────────────────────────────────────────────── */
 .video-vignette {
-  background: 
+  background:
     linear-gradient(to bottom,
       rgba(5,5,5,0.55) 0%,
       rgba(5,5,5,0.05) 35%,
@@ -159,12 +189,71 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────
+   GLASSMORPHISM — premium frosted glass effects
+───────────────────────────────────────────────────── */
+
+/* Glass card — for content overlaying video backgrounds */
+.glass-card {
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(28px) saturate(130%);
+  -webkit-backdrop-filter: blur(28px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  box-shadow:
+    0 8px 40px rgba(5, 5, 5, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Glass card with warm espresso tint */
+.glass-card-warm {
+  background: rgba(18, 10, 6, 0.52);
+  backdrop-filter: blur(28px) saturate(130%);
+  -webkit-backdrop-filter: blur(28px) saturate(130%);
+  border: 1px solid rgba(212, 168, 67, 0.08);
+  box-shadow:
+    0 8px 40px rgba(5, 5, 5, 0.55),
+    inset 0 1px 0 rgba(212, 168, 67, 0.04);
+}
+
+/* Glass nav */
+.glass-nav {
+  background: rgba(5, 5, 5, 0.28);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.042);
+  box-shadow:
+    0 1px 0 rgba(212, 168, 67, 0.055),
+    0 4px 24px rgba(5, 5, 5, 0.3);
+}
+
+/* Glass service card */
+.glass-service {
+  background: rgba(14, 14, 14, 0.38);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 24px rgba(5, 5, 5, 0.35);
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s var(--ease-expo);
+}
+.glass-service:hover {
+  background: rgba(22, 22, 22, 0.58);
+  border-color: rgba(212, 168, 67, 0.18);
+  box-shadow:
+    0 12px 48px rgba(5, 5, 5, 0.5),
+    inset 0 1px 0 rgba(212, 168, 67, 0.06);
+  transform: translateY(-6px);
+}
+
+/* ─────────────────────────────────────────────────────
    PREMIUM BUTTON
 ───────────────────────────────────────────────────── */
 .btn-gold {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(212,168,67,0.5);
+  border: 1px solid rgba(212,168,67,0.45);
   color: var(--gold);
   transition: color 0.5s ease;
   isolation: isolate;
@@ -189,10 +278,48 @@ body {
   align-items: center;
   gap: 16px;
   font-family: var(--font-inter);
-  font-size: 10px;
-  letter-spacing: 0.45em;
+  font-size: 9px;
+  letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: rgba(212,168,67,0.55);
+  color: rgba(212,168,67,0.5);
+}
+
+/* ─────────────────────────────────────────────────────
+   TYPOGRAPHY UTILITIES
+───────────────────────────────────────────────────── */
+
+/* Display headline — for hero and major section titles */
+.display-title {
+  font-family: var(--font-bodoni);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+
+/* Section headline — slightly smaller, for h2s */
+.section-title {
+  font-family: var(--font-bodoni);
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+  font-weight: 700;
+}
+
+/* Decorative italic — pull quotes, taglines */
+.serif-italic {
+  font-family: var(--font-bodoni);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Refined body copy — Inter 300, generous leading */
+.body-refined {
+  font-family: var(--font-inter);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.9;
+  color: rgba(249,245,238,0.5);
+  letter-spacing: 0.01em;
 }
 
 /* ─────────────────────────────────────────────────────
@@ -211,17 +338,17 @@ body {
 ───────────────────────────────────────────────────── */
 .skill-tag {
   font-family: var(--font-inter);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-size: 9px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(212,168,67,0.45);
-  border: 1px solid rgba(212,168,67,0.15);
-  padding: 5px 12px;
+  color: rgba(212,168,67,0.4);
+  border: 1px solid rgba(212,168,67,0.12);
+  padding: 6px 14px;
   transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 .skill-tag:hover {
   color: var(--gold);
-  border-color: rgba(212,168,67,0.5);
+  border-color: rgba(212,168,67,0.45);
   background: rgba(212,168,67,0.05);
 }
 
@@ -236,19 +363,21 @@ body {
   padding: 14px 0;
   font-family: var(--font-inter);
   font-size: 14px;
+  font-weight: 300;
   color: var(--ivory);
   transition: border-color 0.3s ease;
   width: 100%;
+  letter-spacing: 0.01em;
 }
-.form-input::placeholder { color: rgba(249,245,238,0.2); }
-.form-input:focus { border-color: var(--gold); }
+.form-input::placeholder { color: rgba(249,245,238,0.18); }
+.form-input:focus { border-color: rgba(212,168,67,0.6); }
 
 /* ─────────────────────────────────────────────────────
    SCROLL INDICATOR ANIMATION
 ───────────────────────────────────────────────────── */
 @keyframes scrollPulse {
-  0%, 100% { transform: scaleY(1); opacity: 0.6; }
-  50%       { transform: scaleY(0.3); opacity: 0.2; }
+  0%, 100% { transform: scaleY(1); opacity: 0.55; }
+  50%       { transform: scaleY(0.25); opacity: 0.15; }
 }
 
 /* ─────────────────────────────────────────────────────
@@ -256,13 +385,54 @@ body {
 ───────────────────────────────────────────────────── */
 @keyframes dotPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(212,168,67,0); }
-  50%       { box-shadow: 0 0 0 6px rgba(212,168,67,0.1); }
+  50%       { box-shadow: 0 0 0 6px rgba(212,168,67,0.08); }
+}
+
+/* ─────────────────────────────────────────────────────
+   AMBIENT BLOOM DRIFT — extremely subtle warm glow
+   Drifts slowly so the page never feels frozen
+───────────────────────────────────────────────────── */
+@keyframes bloomDrift {
+  0%   { transform: translate(0%,    0%)    scale(1);    opacity: 0.55; }
+  25%  { transform: translate(3%,   -2%)    scale(1.04); opacity: 0.70; }
+  50%  { transform: translate(-2%,   3%)    scale(0.97); opacity: 0.50; }
+  75%  { transform: translate(2%,    2%)    scale(1.02); opacity: 0.65; }
+  100% { transform: translate(0%,    0%)    scale(1);    opacity: 0.55; }
+}
+
+/* ─────────────────────────────────────────────────────
+   DRAW LINE — animated horizontal rule reveal
+───────────────────────────────────────────────────── */
+@keyframes drawLine {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ─────────────────────────────────────────────────────
+   COUNT UP — number counter shimmer on entry
+───────────────────────────────────────────────────── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─────────────────────────────────────────────────────
    UTILITIES
 ───────────────────────────────────────────────────── */
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  .font-light-300 { font-weight: 300; }
+  .text-balance  { text-wrap: balance; }
+  .font-300      { font-weight: 300; }
+
+  /* Warm espresso background tints */
+  .bg-espresso-tint {
+    background: rgba(44, 24, 16, 0.15);
+  }
+
+  /* Gold text gradient — static, no animation */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
