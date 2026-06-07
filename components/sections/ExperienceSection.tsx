@@ -81,16 +81,16 @@ export default function ExperienceSection() {
               transition={{ duration: 1.0, delay: 0.15 + i * 0.1, ease: EASE }}
             >
               {/* Period */}
-              <span className="font-inter text-[9px] tracking-[0.2em] text-ivory/22 w-28 flex-shrink-0">
+              <span className="font-sans text-[9px] tracking-[0.2em] text-ivory/22 w-28 flex-shrink-0">
                 {job.period}
               </span>
 
               {/* Role + venue */}
               <div>
-                <p className="font-manrope font-semibold text-base md:text-lg text-ivory/85 leading-tight">
+                <p className="font-brand font-semibold text-base md:text-lg text-ivory/85 leading-tight">
                   {job.role}
                 </p>
-                <p className="font-inter text-[11px] text-ivory/35 font-light mt-0.5 tracking-[0.02em]">
+                <p className="font-sans text-[11px] text-ivory/35 font-light mt-0.5 tracking-[0.02em]">
                   {job.company} · {job.location}
                 </p>
               </div>
@@ -113,17 +113,17 @@ export default function ExperienceSection() {
             ["6–8", "Team Size"],
           ].map(([n, l]) => (
             <div key={l} className="flex flex-col gap-1">
-              <span className="font-manrope font-bold text-xl gold-shimmer leading-none">{n}</span>
-              <span className="font-inter text-[8px] tracking-[0.3em] uppercase text-ivory/25">{l}</span>
+              <span className="font-brand font-bold text-xl gold-shimmer leading-none">{n}</span>
+              <span className="font-sans text-[8px] tracking-[0.3em] uppercase text-ivory/25">{l}</span>
             </div>
           ))}
 
           {/* Education — inline, minimal */}
           <div className="hidden md:flex flex-col gap-1 ml-4 pl-8 border-l border-white/6">
-            <span className="font-inter font-light text-sm text-ivory/55 leading-tight">
+            <span className="font-sans font-light text-sm text-ivory/55 leading-tight">
               Hotel Management
             </span>
-            <span className="font-inter text-[8px] tracking-[0.2em] uppercase text-ivory/22">
+            <span className="font-sans text-[8px] tracking-[0.2em] uppercase text-ivory/22">
               University of Tehran · 2019–2023
             </span>
           </div>

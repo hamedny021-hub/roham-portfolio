@@ -9,9 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        manrope:   ["var(--font-manrope)",   "system-ui", "sans-serif"],
-        inter:     ["var(--font-inter)",     "system-ui", "sans-serif"],
-        grotesk:   ["var(--font-grotesk)",   "system-ui", "sans-serif"],
+        brand:  ["var(--font-brand)",  "Inter", "sans-serif"],
+        sans:   ["var(--font-sans)",   "system-ui", "sans-serif"],
+        accent: ["var(--font-accent)", "Inter", "sans-serif"],
       },
       colors: {
         gold: {

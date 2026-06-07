@@ -14,7 +14,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
  *        and again on every scroll-back, so the video always replays cleanly.
  *        No loop — freezes on final frame until next entry.
  *        Matches VideoBackground behavior used by all other sections.
- * Font: Manrope ExtraBold for ROHAM — modern premium studio feel (Framer/Linear/Apple).
+ * Font: Plus Jakarta Sans ExtraBold for ROHAM — modern premium studio feel (Framer/Linear/Apple).
  * Overlays: lighter so coffee-bean detail is visible.
  * Animations: staggered, blur-to-sharp on tagline, respects prefers-reduced-motion.
  * Scroll: late-activating parallax (effects only when user is leaving section).
@@ -159,7 +159,7 @@ export default function HeroSection() {
 
           {/* Location — quiet gold label, appears first */}
           <motion.p
-            className="font-inter text-[9px] tracking-[0.55em] uppercase text-gold/55 mb-5"
+            className="font-sans text-[9px] tracking-[0.55em] uppercase text-gold/55 mb-5"
             initial={{ opacity: pRM ? 1 : 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: pRM ? 0 : 0.25, ease: EASE }}
@@ -168,14 +168,14 @@ export default function HeroSection() {
           </motion.p>
 
           {/* ── ROHAM — primary brand mark ──────────────────────────────
-              Manrope ExtraBold: modern geometric construction reads as
-              premium studio at display sizes — Apple / Framer / Linear energy.
+              Plus Jakarta Sans ExtraBold: modern geometric sans-serif.
+              Premium studio at display sizes — Framer / Linear / Apple energy.
               Wide tracking + ExtraBold weight = strong, clean, confident.
               Clipped container mask for the cinematic slide-up reveal.
           ─────────────────────────────────────────────────────────────── */}
           <div className="overflow-hidden mb-6">
             <motion.h1
-              className="font-manrope font-extrabold leading-[0.90]"
+              className="font-brand font-extrabold leading-[0.90]"
               style={{ fontSize: "clamp(3.5rem, 10vw, 8.5rem)", letterSpacing: "0.22em" }}
               initial={{ opacity: pRM ? 1 : 0, y: pRM ? 0 : "108%" }}
               animate={{ opacity: 1, y: 0 }}
@@ -195,7 +195,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.85, delay: pRM ? 0 : 1.15 + i * 0.13, ease: EASE }}
               >
-                <span className="font-inter text-[10px] tracking-[0.26em] uppercase text-ivory/55 font-light">
+                <span className="font-sans text-[10px] tracking-[0.26em] uppercase text-ivory/55 font-light">
                   {role}
                 </span>
                 {i < 2 && <span className="text-gold/30 text-[6px]">·</span>}
@@ -205,7 +205,7 @@ export default function HeroSection() {
 
           {/* Tagline — blur-to-sharp reveal, Inter Light for clean modern feel */}
           <motion.p
-            className="font-inter font-light text-base md:text-lg text-ivory/45 tracking-[0.04em] mb-10"
+            className="font-sans font-light text-base md:text-lg text-ivory/45 tracking-[0.04em] mb-10"
             initial={{
               opacity: pRM ? 1 : 0,
               filter:  pRM ? "blur(0px)" : "blur(10px)",
@@ -225,13 +225,13 @@ export default function HeroSection() {
           >
             <a
               href="#experience"
-              className="btn-gold font-inter text-[10px] tracking-[0.28em] uppercase px-8 py-3.5"
+              className="btn-gold font-sans text-[10px] tracking-[0.28em] uppercase px-8 py-3.5"
             >
               View Experience
             </a>
             <a
               href="#contact"
-              className="font-inter text-[10px] tracking-[0.25em] uppercase text-ivory/30 hover:text-ivory/60 transition-colors duration-500"
+              className="font-sans text-[10px] tracking-[0.25em] uppercase text-ivory/30 hover:text-ivory/60 transition-colors duration-500"
             >
               Get in Touch
             </a>
@@ -252,7 +252,7 @@ export default function HeroSection() {
               animation: "scrollPulse 2.8s ease-in-out infinite",
             }}
           />
-          <span className="font-inter text-[7px] tracking-[0.45em] uppercase text-ivory/20">
+          <span className="font-sans text-[7px] tracking-[0.45em] uppercase text-ivory/20">
             Scroll
           </span>
         </motion.div>

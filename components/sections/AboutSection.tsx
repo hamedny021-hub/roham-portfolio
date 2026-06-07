@@ -75,10 +75,10 @@ export default function AboutSection() {
                 ["Status",     "Open to Opportunities"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-baseline gap-4">
-                  <span className="font-inter text-[8px] tracking-[0.35em] uppercase text-ivory/22 w-24 flex-shrink-0">
+                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/22 w-24 flex-shrink-0">
                     {k}
                   </span>
-                  <span className="font-inter text-[12px] text-ivory/60 font-light">{v}</span>
+                  <span className="font-sans text-[12px] text-ivory/60 font-light">{v}</span>
                 </div>
               ))}
             </div>
@@ -89,13 +89,13 @@ export default function AboutSection() {
             <div className="flex items-center gap-5">
               <a
                 href="#experience"
-                className="btn-gold font-inter text-[10px] tracking-[0.28em] uppercase px-7 py-3"
+                className="btn-gold font-sans text-[10px] tracking-[0.28em] uppercase px-7 py-3"
               >
                 My Journey
               </a>
               <a
                 href="#contact"
-                className="font-inter text-[10px] tracking-[0.25em] uppercase text-ivory/28 hover:text-gold/60 transition-colors duration-500 hover-gold"
+                className="font-sans text-[10px] tracking-[0.25em] uppercase text-ivory/28 hover:text-gold/60 transition-colors duration-500 hover-gold"
               >
                 Let's Talk
               </a>
@@ -112,15 +112,15 @@ export default function AboutSection() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 1.0, delay: 0.5, ease: EASE }}
         >
-          <p className="font-manrope font-extrabold gold-shimmer leading-none"
+          <p className="font-brand font-extrabold gold-shimmer leading-none"
             style={{ fontSize: "clamp(2.2rem, 4vw, 3rem)" }}>
             7+
           </p>
           <div>
-            <p className="font-inter text-[8px] tracking-[0.35em] uppercase text-ivory/35">
+            <p className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/35">
               Years of Craft
             </p>
-            <p className="font-inter text-[8px] tracking-[0.35em] uppercase text-ivory/20 mt-0.5">
+            <p className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/20 mt-0.5">
               Two Countries
             </p>
           </div>

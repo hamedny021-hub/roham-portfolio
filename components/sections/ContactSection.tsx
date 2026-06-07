@@ -104,7 +104,7 @@ export default function ContactSection() {
         </SectionReveal>
 
         <SectionReveal delay={0.1}>
-          <p className="font-inter text-[9px] tracking-[0.42em] uppercase text-ivory/28 mt-3 mb-10 md:mb-14">
+          <p className="font-sans text-[9px] tracking-[0.42em] uppercase text-ivory/28 mt-3 mb-10 md:mb-14">
             Open to café consulting · barista roles · creative collaborations
           </p>
         </SectionReveal>
@@ -128,7 +128,7 @@ export default function ContactSection() {
                 <s.Icon />
               </span>
               {/* Platform label */}
-              <span className="font-inter text-[8px] tracking-[0.38em] uppercase text-ivory/22 group-hover:text-gold/55 transition-colors duration-400">
+              <span className="font-sans text-[8px] tracking-[0.38em] uppercase text-ivory/22 group-hover:text-gold/55 transition-colors duration-400">
                 {s.label}
               </span>
             </motion.a>

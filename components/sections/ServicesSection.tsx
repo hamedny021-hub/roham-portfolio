@@ -70,14 +70,14 @@ export default function ServicesSection() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 1.0, delay: 0.2 + i * 0.12, ease: EASE }}
             >
-              <span className="font-grotesk text-4xl font-bold text-gold/10 group-hover:text-gold/20 transition-colors duration-500 leading-none mt-1 select-none">
+              <span className="font-accent text-4xl font-bold text-gold/10 group-hover:text-gold/20 transition-colors duration-500 leading-none mt-1 select-none">
                 {o.n}
               </span>
               <div>
-                <p className="font-manrope font-semibold text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
+                <p className="font-brand font-semibold text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
                   {o.title}
                 </p>
-                <p className="font-inter text-[11px] tracking-[0.12em] text-ivory/28 font-light">
+                <p className="font-sans text-[11px] tracking-[0.12em] text-ivory/28 font-light">
                   {o.note}
                 </p>
               </div>

@@ -1,36 +1,36 @@
 import type { Metadata } from "next";
-import { Manrope, Inter, Space_Grotesk } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Space_Grotesk } from "next/font/google";
 import ScrollProgress    from "@/components/ui/ScrollProgress";
 import AmbientParticles  from "@/components/ui/AmbientParticles";
 import CustomCursor      from "@/components/ui/CustomCursor";
 import "./globals.css";
 
-// Manrope — primary display font. Clean geometric construction at all weights
-// with expressive thick-thin rhythm at ExtraBold. Reads as modern luxury at
-// display sizes. Think Framer, Linear, Stripe — not editorial / fashion magazine.
-const manrope = Manrope({
+// Plus Jakarta Sans — brand / primary display font.
+// Modern geometric sans-serif. Premium studio energy — think Framer, Linear,
+// Arc Browser. Zero serif, zero old-world feeling. Loaded at 400–800.
+const brand = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-brand",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-// Inter — body and UI font. Optimised for screen legibility at all sizes.
-// Buttons, paragraphs, nav links, form inputs.
-const inter = Inter({
+// Inter — body and UI font. Screen-optimised at every size.
+// Paragraphs, buttons, form inputs, secondary labels.
+const sans = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
   display: "swap",
   weight: ["300", "400", "500", "600"],
 });
 
-// Space Grotesk — technical accent font. Section numbers, role tags,
-// small labels, metadata. Geometric precision pairs cleanly with Manrope.
-const grotesk = Space_Grotesk({
+// Space Grotesk — technical accent font.
+// Section numbers, role tags, small uppercase labels, metadata.
+const accent = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-grotesk",
+  variable: "--font-accent",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${manrope.variable} ${inter.variable} ${grotesk.variable} bg-ink text-ivory antialiased grain-overlay`}>
+      <body className={`${brand.variable} ${sans.variable} ${accent.variable} bg-ink text-ivory antialiased grain-overlay`}>
         <CustomCursor />
         <ScrollProgress />
         <AmbientParticles />

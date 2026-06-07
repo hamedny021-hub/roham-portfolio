@@ -52,6 +52,7 @@ html {
 }
 
 body {
+  font-family: var(--font-sans);
   color: var(--ivory);
   background: var(--ink);
   overflow-x: hidden;
@@ -306,13 +307,13 @@ body {
 .btn-gold:hover { color: var(--ink); }
 
 /* ─────────────────────────────────────────────────────
-   SECTION LABEL
+   SECTION LABEL  (eyebrow / section number)
 ───────────────────────────────────────────────────── */
 .section-label {
   display: flex;
   align-items: center;
   gap: 16px;
-  font-family: var(--font-grotesk);
+  font-family: var(--font-accent);
   font-size: 9px;
   letter-spacing: 0.5em;
   text-transform: uppercase;
@@ -321,28 +322,47 @@ body {
 
 /* ─────────────────────────────────────────────────────
    TYPOGRAPHY UTILITIES
+   All display / heading / UI classes use Plus Jakarta Sans
+   (--font-brand) or Inter (--font-sans). Zero serif fonts.
 ───────────────────────────────────────────────────── */
 
-/* Display headline — hero brand mark, major section titles */
+/* Large display headline — hero brand mark */
 .display-title {
-  font-family: var(--font-manrope);
+  font-family: var(--font-brand);
   line-height: 0.92;
   letter-spacing: 0.04em;
   font-weight: 800;
 }
 
-/* Section headline — h2 level, clean Manrope SemiBold */
+/* Section h2 — Plus Jakarta Sans SemiBold */
 .section-title {
-  font-family: var(--font-manrope);
+  font-family: var(--font-brand);
   line-height: 1.05;
   letter-spacing: 0.01em;
   font-weight: 600;
 }
 
-/* Accent word within a heading — lighter weight of same font, no serif.
-   Gold color provides visual differentiation; weight contrast adds rhythm. */
+/* Eyebrow label — Space Grotesk, small caps */
+.eyebrow {
+  font-family: var(--font-accent);
+  font-size: 9px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* Accent word within a heading — lighter weight, same brand font.
+   Gold color + weight contrast = hierarchy without serif. */
+.accent-em {
+  font-family: var(--font-brand);
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* Legacy class name — repurposed. Same as .accent-em for backward compat. */
 .serif-italic {
-  font-family: var(--font-manrope);
+  font-family: var(--font-brand);
   font-style: normal;
   font-weight: 300;
   letter-spacing: 0.02em;
@@ -350,12 +370,30 @@ body {
 
 /* Refined body copy — Inter 300, generous leading */
 .body-refined {
-  font-family: var(--font-inter);
+  font-family: var(--font-sans);
   font-weight: 300;
   font-size: 14px;
   line-height: 1.9;
   color: rgba(249,245,238,0.5);
   letter-spacing: 0.01em;
+}
+
+/* Navigation link */
+.nav-link {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* Button text */
+.button-text {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 /* ─────────────────────────────────────────────────────
@@ -373,7 +411,7 @@ body {
    SKILL TAG
 ───────────────────────────────────────────────────── */
 .skill-tag {
-  font-family: var(--font-inter);
+  font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -397,7 +435,7 @@ body {
   border-bottom: 1px solid var(--ink-border2);
   outline: none;
   padding: 14px 0;
-  font-family: var(--font-inter);
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 300;
   color: var(--ivory);

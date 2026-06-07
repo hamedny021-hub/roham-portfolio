@@ -18,12 +18,12 @@ export default function Footer() {
           {/* Brand */}
           <a
             href="#hero"
-            className="font-manrope font-bold text-[16px] tracking-[0.35em] text-ivory/45 hover:text-gold/70 transition-colors duration-500"
+            className="font-brand font-bold text-[16px] tracking-[0.35em] text-ivory/45 hover:text-gold/70 transition-colors duration-500"
           >
             ROHAM
           </a>
 
-          <p className="font-inter text-[8px] tracking-[0.28em] uppercase text-ivory/15">
+          <p className="font-sans text-[8px] tracking-[0.28em] uppercase text-ivory/15">
             Barista · Hospitality · Creative Direction
           </p>
 
@@ -33,7 +33,7 @@ export default function Footer() {
               <a
                 key={l}
                 href={`#${l.toLowerCase()}`}
-                className="font-grotesk text-[8px] tracking-[0.25em] uppercase text-ivory/15 hover:text-gold/40 transition-colors duration-400"
+                className="font-accent text-[8px] tracking-[0.25em] uppercase text-ivory/15 hover:text-gold/40 transition-colors duration-400"
               >
                 {l}
               </a>
@@ -47,7 +47,7 @@ export default function Footer() {
           />
 
           {/* Copyright */}
-          <p className="font-inter text-[8px] tracking-[0.2em] uppercase text-ivory/10">
+          <p className="font-sans text-[8px] tracking-[0.2em] uppercase text-ivory/10">
             © {year} Hamed Roham · Toronto, Canada
           </p>
         </div>
