@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
@@ -10,7 +10,15 @@ export default function CustomCursor() {
   const rafId   = useRef<number>(0);
   const hovered = useRef(false);
 
+  // Don't render on touch/stylus devices — no mouse pointer exists
+  const [isPointer, setIsPointer] = useState(false);
   useEffect(() => {
+    setIsPointer(window.matchMedia("(pointer: fine)").matches);
+  }, []);
+
+  useEffect(() => {
+    // Bail out if not a pointer (mouse/trackpad) device
+    if (!isPointer) return;
     const dot  = dotRef.current!;
     const ring = ringRef.current!;
 
@@ -51,6 +59,9 @@ export default function CustomCursor() {
       cancelAnimationFrame(rafId.current);
     };
   }, []);
+
+  // Render nothing on touch / stylus devices
+  if (!isPointer) return null;
 
   return (
     <>
