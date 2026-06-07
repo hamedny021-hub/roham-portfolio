@@ -23,7 +23,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative min-h-screen flex items-center overflow-hidden bg-ink"
+      className="relative min-h-screen flex items-end md:items-center overflow-hidden bg-ink"
     >
       {/* 04-portafilter hand.MP4 — space in filename encoded as %20 */}
       <VideoBackground src="/videos/04-portafilter%20hand.MP4" darkness={0.52} warmTint />
@@ -33,18 +33,19 @@ export default function SkillsSection() {
         style={{ background: "linear-gradient(to bottom, #050505, transparent)" }}
       />
 
-      {/* Glass panel — left side, stays out of the footage subject area */}
-      <div className="relative z-30 w-full px-8 md:px-16 py-24 md:py-0">
-        <div className="glass-card-warm p-9 md:p-11 max-w-xs md:max-w-sm">
+      {/* Glass panel — left side, stays out of the footage subject area.
+          On mobile: anchored to bottom (items-end on section), reduced padding. */}
+      <div className="relative z-30 w-full px-5 md:px-16 py-8 md:py-0">
+        <div className="glass-card-warm p-5 md:p-11 max-w-xs md:max-w-sm">
 
           <SectionReveal>
-            <div className="section-label mb-9">
+            <div className="section-label mb-5 md:mb-9">
               <span>03 — Skills</span>
               <div className="gold-line" />
             </div>
           </SectionReveal>
 
-          <div className="flex flex-col gap-9">
+          <div className="flex flex-col gap-5 md:gap-9">
             {disciplines.map((d, di) => (
               <SectionReveal key={d.cat} delay={0.1 + di * 0.1}>
                 <div>

@@ -10,7 +10,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex items-center justify-end overflow-hidden bg-ink"
+      className="relative min-h-screen flex items-end md:items-center justify-end overflow-hidden bg-ink"
     >
 
       {/* ── 02-grinding.MP4 — main visual ────────────── */}
@@ -29,9 +29,11 @@ export default function AboutSection() {
 
       {/* ── Minimal glass text panel — right side ────── */}
       {/* Floats over the video without blocking the subject */}
-      <div className="relative z-30 w-full md:w-auto md:max-w-md lg:max-w-lg px-8 md:px-0 md:mr-16 lg:mr-24 py-24 md:py-32">
+      {/* On mobile: panel anchored to bottom (items-end on section), letting video fill top.
+          On desktop: right-aligned, vertically centered — unchanged. */}
+      <div className="relative z-30 w-full md:w-auto md:max-w-md lg:max-w-lg px-5 md:px-0 md:mr-16 lg:mr-24 py-8 md:py-32">
 
-        <div className="glass-card p-10 md:p-12">
+        <div className="glass-card p-5 md:p-12">
 
           {/* Section label */}
           <SectionReveal>
@@ -44,8 +46,8 @@ export default function AboutSection() {
           {/* Heading */}
           <SectionReveal delay={0.1}>
             <h2
-              className="section-title text-ivory mb-6"
-              style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}
+              className="section-title text-ivory mb-4 md:mb-6"
+              style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)" }}
             >
               Shaped by<br />
               <em className="serif-italic text-gold not-italic">precision</em>,<br />
@@ -55,7 +57,7 @@ export default function AboutSection() {
 
           {/* Body */}
           <SectionReveal delay={0.2}>
-            <p className="body-refined mb-6">
+            <p className="body-refined mb-4 md:mb-6">
               I'm Hamed Roham — a barista and hospitality professional with over
               seven years of experience turning everyday service moments into
               memorable experiences. From Tehran's finest hotel properties to
@@ -65,7 +67,7 @@ export default function AboutSection() {
 
           {/* Key facts — compact */}
           <SectionReveal delay={0.3}>
-            <div className="flex flex-col gap-3 mb-8 border-t border-white/6 pt-6">
+            <div className="flex flex-col gap-2 mb-5 border-t border-white/6 pt-4 md:gap-3 md:mb-8 md:pt-6">
               {[
                 ["Location",   "Toronto, Ontario"],
                 ["Experience", "7+ Years"],
@@ -101,9 +103,10 @@ export default function AboutSection() {
           </SectionReveal>
         </div>
 
-        {/* Floating stat — outside the card, anchored below */}
+        {/* Floating stat — below the card. Hidden on mobile to reduce vertical bulk;
+            the same data (7+ years, two countries) lives inside the key-facts grid. */}
         <motion.div
-          className="flex items-center gap-4 mt-6 pl-2"
+          className="hidden md:flex items-center gap-4 mt-6 pl-2"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
