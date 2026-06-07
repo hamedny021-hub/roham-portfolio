@@ -74,7 +74,7 @@ export default function ServicesSection() {
                 {o.n}
               </span>
               <div>
-                <p className="font-cormorant font-semibold text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
+                <p className="font-manrope font-semibold text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
                   {o.title}
                 </p>
                 <p className="font-inter text-[11px] tracking-[0.12em] text-ivory/28 font-light">

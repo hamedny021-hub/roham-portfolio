@@ -9,8 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        bodoni:    ["var(--font-bodoni)",    "Georgia", "serif"],
-        cormorant: ["var(--font-cormorant)", "Georgia", "serif"],
+        manrope:   ["var(--font-manrope)",   "system-ui", "sans-serif"],
         inter:     ["var(--font-inter)",     "system-ui", "sans-serif"],
         grotesk:   ["var(--font-grotesk)",   "system-ui", "sans-serif"],
       },

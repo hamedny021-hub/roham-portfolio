@@ -323,27 +323,28 @@ body {
    TYPOGRAPHY UTILITIES
 ───────────────────────────────────────────────────── */
 
-/* Display headline — for hero and major section titles */
+/* Display headline — hero brand mark, major section titles */
 .display-title {
-  font-family: var(--font-cormorant);
-  line-height: 0.88;
-  letter-spacing: 0.02em;
-  font-weight: 700;
+  font-family: var(--font-manrope);
+  line-height: 0.92;
+  letter-spacing: 0.04em;
+  font-weight: 800;
 }
 
-/* Section headline — slightly smaller, for h2s */
+/* Section headline — h2 level, clean Manrope SemiBold */
 .section-title {
-  font-family: var(--font-cormorant);
-  line-height: 0.94;
+  font-family: var(--font-manrope);
+  line-height: 1.05;
   letter-spacing: 0.01em;
   font-weight: 600;
 }
 
-/* Decorative italic — pull quotes, taglines */
+/* Accent word within a heading — lighter weight of same font, no serif.
+   Gold color provides visual differentiation; weight contrast adds rhythm. */
 .serif-italic {
-  font-family: var(--font-cormorant);
-  font-style: italic;
-  font-weight: 400;
+  font-family: var(--font-manrope);
+  font-style: normal;
+  font-weight: 300;
   letter-spacing: 0.02em;
 }
 

@@ -112,7 +112,7 @@ export default function AboutSection() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 1.0, delay: 0.5, ease: EASE }}
         >
-          <p className="font-cormorant font-bold gold-shimmer leading-none"
+          <p className="font-manrope font-extrabold gold-shimmer leading-none"
             style={{ fontSize: "clamp(2.2rem, 4vw, 3rem)" }}>
             7+
           </p>

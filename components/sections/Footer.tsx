@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand */}
           <a
             href="#hero"
-            className="font-cormorant font-semibold text-[22px] tracking-[0.35em] text-ivory/45 hover:text-gold/70 transition-colors duration-500"
+            className="font-manrope font-bold text-[16px] tracking-[0.35em] text-ivory/45 hover:text-gold/70 transition-colors duration-500"
           >
             ROHAM
           </a>

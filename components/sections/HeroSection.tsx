@@ -14,7 +14,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
  *        and again on every scroll-back, so the video always replays cleanly.
  *        No loop — freezes on final frame until next entry.
  *        Matches VideoBackground behavior used by all other sections.
- * Font: Cormorant Garamond for ROHAM + tagline — classical thick/thin serif.
+ * Font: Manrope ExtraBold for ROHAM — modern premium studio feel (Framer/Linear/Apple).
  * Overlays: lighter so coffee-bean detail is visible.
  * Animations: staggered, blur-to-sharp on tagline, respects prefers-reduced-motion.
  * Scroll: late-activating parallax (effects only when user is leaving section).
@@ -168,15 +168,15 @@ export default function HeroSection() {
           </motion.p>
 
           {/* ── ROHAM — primary brand mark ──────────────────────────────
-              Cormorant Garamond bold: the high contrast thick/thin strokes of
-              a classical book serif make this instantly read as luxury.
-              Larger than before. Wider tracking. Clipped-container mask
-              lets the upward slide emerge from nothing — cinematic reveal.
+              Manrope ExtraBold: modern geometric construction reads as
+              premium studio at display sizes — Apple / Framer / Linear energy.
+              Wide tracking + ExtraBold weight = strong, clean, confident.
+              Clipped container mask for the cinematic slide-up reveal.
           ─────────────────────────────────────────────────────────────── */}
           <div className="overflow-hidden mb-6">
             <motion.h1
-              className="font-cormorant font-bold leading-[0.88]"
-              style={{ fontSize: "clamp(3.5rem, 10vw, 8.5rem)", letterSpacing: "0.18em" }}
+              className="font-manrope font-extrabold leading-[0.90]"
+              style={{ fontSize: "clamp(3.5rem, 10vw, 8.5rem)", letterSpacing: "0.22em" }}
               initial={{ opacity: pRM ? 1 : 0, y: pRM ? 0 : "108%" }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.35, delay: pRM ? 0 : 0.55, ease: EASE }}
@@ -203,9 +203,9 @@ export default function HeroSection() {
             ))}
           </div>
 
-          {/* Tagline — blur-to-sharp reveal, Cormorant italic for elegance */}
+          {/* Tagline — blur-to-sharp reveal, Inter Light for clean modern feel */}
           <motion.p
-            className="font-cormorant italic text-lg md:text-xl text-ivory/42 tracking-wide mb-10"
+            className="font-inter font-light text-base md:text-lg text-ivory/45 tracking-[0.04em] mb-10"
             initial={{
               opacity: pRM ? 1 : 0,
               filter:  pRM ? "blur(0px)" : "blur(10px)",

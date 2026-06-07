@@ -1,29 +1,22 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Cormorant_Garamond, Inter, Space_Grotesk } from "next/font/google";
+import { Manrope, Inter, Space_Grotesk } from "next/font/google";
 import ScrollProgress    from "@/components/ui/ScrollProgress";
 import AmbientParticles  from "@/components/ui/AmbientParticles";
 import CustomCursor      from "@/components/ui/CustomCursor";
 import "./globals.css";
 
-const bodoni = Bodoni_Moda({
+// Manrope — primary display font. Clean geometric construction at all weights
+// with expressive thick-thin rhythm at ExtraBold. Reads as modern luxury at
+// display sizes. Think Framer, Linear, Stripe — not editorial / fashion magazine.
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-bodoni",
+  variable: "--font-manrope",
   display: "swap",
-  style: ["normal", "italic"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-// Cormorant Garamond — primary display font for luxury hero typography.
-// The classical thick-thin stroke contrast gives ROHAM an instant high-end
-// editorial presence that Bodoni Moda cannot achieve at display sizes.
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-  display: "swap",
-  style: ["normal", "italic"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
+// Inter — body and UI font. Optimised for screen legibility at all sizes.
+// Buttons, paragraphs, nav links, form inputs.
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -31,9 +24,8 @@ const inter = Inter({
   weight: ["300", "400", "500", "600"],
 });
 
-// Space Grotesk — technical accent font for labels, numbers, section tags.
-// Its geometric precision contrasts beautifully with Cormorant's calligraphic curves,
-// giving UI micro-labels a crisp, modern edge while the headline remains classical.
+// Space Grotesk — technical accent font. Section numbers, role tags,
+// small labels, metadata. Geometric precision pairs cleanly with Manrope.
 const grotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-grotesk",
@@ -56,7 +48,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} ${grotesk.variable} bg-ink text-ivory antialiased grain-overlay`}>
+      <body className={`${manrope.variable} ${inter.variable} ${grotesk.variable} bg-ink text-ivory antialiased grain-overlay`}>
         <CustomCursor />
         <ScrollProgress />
         <AmbientParticles />

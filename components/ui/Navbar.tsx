@@ -32,7 +32,7 @@ export default function Navbar() {
           scrolled ? "glass-nav" : ""
         }`}
       >
-        <a href="#hero" className="font-cormorant font-semibold text-[22px] tracking-[0.28em] text-ivory hover:text-gold transition-colors duration-300">
+        <a href="#hero" className="font-manrope font-bold text-[18px] tracking-[0.28em] text-ivory hover:text-gold transition-colors duration-300">
           ROHAM
         </a>
 
@@ -72,7 +72,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setOpen(false)}
-                className="font-cormorant font-semibold text-5xl text-ivory hover:text-gold transition-colors duration-300">
+                className="font-manrope font-bold text-4xl text-ivory hover:text-gold transition-colors duration-300">
                 {l.label}
               </motion.a>
             ))}
