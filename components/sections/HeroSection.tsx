@@ -12,16 +12,16 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
  *
  * Architecture
  * ────────────
- * Outer <section>  : height 600vh  — provides the scroll runway.
- * Inner sticky div : height 100vh  — stays in view the entire time.
+ * Outer <section>  : 250vh desktop / 200vh mobile (CSS class hero-scroll-section).
+ * Inner sticky div : height 100vh — stays in view the entire time.
  *
  * The video never auto-plays. GSAP ScrollTrigger maps page scroll position
  * (0 → 600vh) directly to video.currentTime (0 → duration) so the user
  * controls the footage frame-by-frame with their scroll wheel or swipe.
  * Reverse scrubbing works natively.
  *
- * scrub: 1   → 1-second GSAP smoothing (hides browser seek latency on desktop).
- * scrub: 1.5 → used on touch / mobile where native video seeking is slower.
+ * scrub: 0.4 → desktop. Fast, Apple-style response. Hides H.264 seek lag without feeling sluggish.
+ * scrub: 0.6 → touch / mobile. Slightly more damping — native seeking is slower on mobile browsers.
  *
  * Performance: no play(), no RAF loop, no IntersectionObserver.
  * One GSAP ScrollTrigger instance + the browser's internal seek pipeline.
@@ -40,12 +40,14 @@ export default function HeroSection() {
     // Safe to call multiple times — GSAP no-ops if already registered
     gsap.registerPlugin(ScrollTrigger);
 
-    // Touch / mobile devices seek video more slowly → more GSAP smoothing
+    // Lower scrub = faster, more responsive playhead catch-up.
+    // Desktop 0.4: snappy but still smooth enough to hide H.264 seek lag.
+    // Mobile  0.6: slightly more damping — touch seeking is slower natively.
     const scrub =
       typeof window !== "undefined" &&
       window.matchMedia("(pointer: coarse)").matches
-        ? 1.5
-        : 1;
+        ? 0.6
+        : 0.4;
 
     const init = () => {
       const dur = v.duration;
@@ -88,14 +90,16 @@ export default function HeroSection() {
 
   return (
     /*
-     * Outer section — 600vh of scroll distance.
+     * Outer section — scroll runway.
+     * hero-scroll-section in globals.css sets 250vh desktop / 200vh mobile
+     * via @media (pointer: coarse). CSS is applied before ScrollTrigger reads
+     * the DOM so the trigger bounds are always correct for the device.
      * bg-ink fills any gap between the sticky panel and the next section.
      */
     <section
       ref={sectionRef}
       id="hero"
-      className="relative bg-ink"
-      style={{ height: "600vh" }}
+      className="relative bg-ink hero-scroll-section"
     >
       {/* ── Sticky inner — stays in view the full 600vh ──────────────── */}
       <div className="sticky top-0 w-full h-screen overflow-hidden flex items-end justify-start">

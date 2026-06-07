@@ -408,6 +408,23 @@ body {
 .form-input:focus { border-color: rgba(212,168,67,0.6); }
 
 /* ─────────────────────────────────────────────────────
+   HERO SCROLL RUNWAY
+   250vh desktop keeps the cinematic scrub feeling short
+   and premium. 200vh on touch/mobile matches one natural
+   swipe gesture without requiring multiple scrolls.
+   GSAP ScrollTrigger reads this from the live DOM after
+   CSS is applied, so responsive values are respected.
+───────────────────────────────────────────────────── */
+.hero-scroll-section {
+  height: 250vh;
+}
+@media (pointer: coarse) {
+  .hero-scroll-section {
+    height: 200vh;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
    SCROLL INDICATOR ANIMATION
 ───────────────────────────────────────────────────── */
 @keyframes scrollPulse {
