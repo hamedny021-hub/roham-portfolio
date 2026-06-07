@@ -1,149 +1,141 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion }                       from "framer-motion";
-import { gsap }                         from "gsap";
-import { ScrollTrigger }                from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState }       from "react";
+import { motion, useScroll, useTransform }   from "framer-motion";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /**
- * Hero section — cinematic scroll-scrubbed video.
+ * Hero section — smooth autoplay video + Framer Motion scroll parallax.
  *
  * Architecture
  * ────────────
- * Outer <section>  : 250vh desktop / 200vh mobile (CSS class hero-scroll-section).
- * Inner sticky div : height 100vh — stays in view the entire time.
+ * Normal h-screen section. No sticky. No currentTime scrubbing. No GSAP.
+ * The browser plays the video natively (autoPlay + loop). Scroll drives
+ * CSS-only parallax transforms via Framer Motion MotionValues — zero seek
+ * calls, zero frame drops.
  *
- * The video never auto-plays. GSAP ScrollTrigger maps page scroll position
- * (0 → 600vh) directly to video.currentTime (0 → duration) so the user
- * controls the footage frame-by-frame with their scroll wheel or swipe.
- * Reverse scrubbing works natively.
+ * On scroll-away:
+ *   • Video drifts upward (background parallax depth)
+ *   • Content rises + fades (foreground parallax, faster than background)
+ *   • Black curtain draws closed for a premium cinematic handoff to About
  *
- * scrub: 0.4 → desktop. Fast, Apple-style response. Hides H.264 seek lag without feeling sluggish.
- * scrub: 0.6 → touch / mobile. Slightly more damping — native seeking is slower on mobile browsers.
- *
- * Performance: no play(), no RAF loop, no IntersectionObserver.
- * One GSAP ScrollTrigger instance + the browser's internal seek pipeline.
+ * Video scale 1.18: oversizes the video 9% in every direction so the
+ * upward drift (-8% max) never exposes the frame edge inside overflow-hidden.
  */
 export default function HeroSection() {
   const sectionRef        = useRef<HTMLElement>(null);
   const videoRef          = useRef<HTMLVideoElement>(null);
-  const stRef             = useRef<ScrollTrigger | null>(null);
   const [ready, setReady] = useState(false);
 
+  // ── Scroll progress ───────────────────────────────────────────────────
+  // 0 = hero top aligned with viewport top (section fully visible)
+  // 1 = hero bottom aligned with viewport top (section has exited)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // ── Parallax transforms ───────────────────────────────────────────────
+  // Video: slow drift upward — background moves slower than content (depth)
+  // scale 1.18 is baked into the motion.video style to avoid CSS vs inline
+  // style conflicts when Framer Motion composes the transform string.
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+
+  // Content: rises and fades as section exits — slightly faster than video
+  const contentY       = useTransform(scrollYProgress, [0, 1],            ["0%", "-6%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.45, 0.82],   [1, 0.95, 0]);
+
+  // Black curtain: draws closed above everything — cinematic scene change
+  // Starts at 30% scroll (user is clearly leaving), fully closed at 90%.
+  const curtainOpacity = useTransform(scrollYProgress, [0.28, 0.90], [0, 1]);
+
+  // ── Video readiness ───────────────────────────────────────────────────
   useEffect(() => {
-    const section = sectionRef.current;
-    const v       = videoRef.current;
-    if (!section || !v) return;
+    const v = videoRef.current;
+    if (!v) return;
 
-    // Safe to call multiple times — GSAP no-ops if already registered
-    gsap.registerPlugin(ScrollTrigger);
+    // readyState 3 = HAVE_FUTURE_DATA — enough to start showing the video
+    if (v.readyState >= 3) { setReady(true); return; }
 
-    // Lower scrub = faster, more responsive playhead catch-up.
-    // Desktop 0.4: snappy but still smooth enough to hide H.264 seek lag.
-    // Mobile  0.6: slightly more damping — touch seeking is slower natively.
-    const scrub =
-      typeof window !== "undefined" &&
-      window.matchMedia("(pointer: coarse)").matches
-        ? 0.6
-        : 0.4;
-
-    const init = () => {
-      const dur = v.duration;
-      if (!dur || !isFinite(dur)) return;
-
-      // Park on frame 0 so the video is visible before the user scrolls
-      v.currentTime = 0;
-      setReady(true);
-
-      stRef.current = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "bottom bottom",
-        scrub,
-        onUpdate(self) {
-          // Clamp 0–1: prevents iOS rubber-band overscroll from seeking out of range
-          const t = Math.max(0, Math.min(1, self.progress)) * dur;
-          // Skip negligibly-small deltas to avoid redundant browser seeks
-          if (Math.abs(v.currentTime - t) > 0.001) {
-            v.currentTime = t;
-          }
-        },
-      });
-    };
-
-    // readyState >= 1 (HAVE_METADATA) → duration is known, run immediately
-    if (v.readyState >= 1) {
-      init();
-    } else {
-      v.addEventListener("loadedmetadata", init, { once: true });
-    }
-
-    return () => {
-      // Remove listener if metadata hasn't fired yet (e.g. fast unmount)
-      v.removeEventListener("loadedmetadata", init);
-      stRef.current?.kill();
-      stRef.current = null;
-    };
+    const onCanPlay = () => setReady(true);
+    v.addEventListener("canplay", onCanPlay, { once: true });
+    return () => v.removeEventListener("canplay", onCanPlay);
   }, []);
 
   return (
-    /*
-     * Outer section — scroll runway.
-     * hero-scroll-section in globals.css sets 250vh desktop / 200vh mobile
-     * via @media (pointer: coarse). CSS is applied before ScrollTrigger reads
-     * the DOM so the trigger bounds are always correct for the device.
-     * bg-ink fills any gap between the sticky panel and the next section.
-     */
     <section
       ref={sectionRef}
       id="hero"
-      className="relative bg-ink hero-scroll-section"
+      className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-ink"
     >
-      {/* ── Sticky inner — stays in view the full 600vh ──────────────── */}
-      <div className="sticky top-0 w-full h-screen overflow-hidden flex items-end justify-start">
+      {/* ── Video — native autoplay, no currentTime manipulation ─────── */}
+      {/*
+        motion.video lets us put y + scale in the same Framer Motion style
+        object, so it composes them into one transform string. No CSS class
+        transform conflict. scale: 1.18 adds 9% buffer so the -8% y drift
+        never clips at the bottom.
+      */}
+      <motion.video
+        ref={videoRef}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1000ms] ease-in-out ${
+          ready ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ objectPosition: "center 40%", y: videoY, scale: 1.18 }}
+        muted
+        playsInline
+        autoPlay
+        loop
+        preload="auto"
+      >
+        <source src="/videos/01-bean-hero.MP4" type="video/mp4" />
+      </motion.video>
 
-        {/* ── Video — scroll-driven, never auto-plays ───────────────── */}
-        <video
-          ref={videoRef}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1000ms] ease-in-out ${
-            ready ? "opacity-100" : "opacity-0"
-          }`}
-          style={{ objectPosition: "center 40%" }}
-          muted
-          playsInline
-          preload="auto"
-          // No autoPlay, no loop — scroll position IS the playhead
-        >
-          <source src="/videos/01-bean-hero.MP4" type="video/mp4" />
-        </video>
+      {/* ── Static overlays — permanent cinematic depth ──────────────── */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{ background: "rgba(8,5,3,0.38)" }}
+      />
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse at 55% 45%,
+              transparent 28%,
+              rgba(5,5,5,0.50) 100%
+            ),
+            linear-gradient(to bottom,
+              rgba(5,5,5,0.30) 0%,
+              transparent      18%,
+              transparent      52%,
+              rgba(5,5,5,0.95) 100%
+            )
+          `,
+        }}
+      />
 
-        {/* ── Overlays ──────────────────────────────────────────────── */}
-        <div
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{ background: "rgba(8,5,3,0.38)" }}
-        />
-        <div
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{
-            background: `
-              radial-gradient(ellipse at 55% 45%,
-                transparent 28%,
-                rgba(5,5,5,0.50) 100%
-              ),
-              linear-gradient(to bottom,
-                rgba(5,5,5,0.30) 0%,
-                transparent      18%,
-                transparent      52%,
-                rgba(5,5,5,0.95) 100%
-              )
-            `,
-          }}
-        />
+      {/* ── Exit curtain — above all content, pointer-events-none ────── */}
+      {/*
+        Sits at z-30 so it darkens the entire scene (video + text) together.
+        pointer-events-none: CTAs remain clickable if user stops mid-scroll.
+      */}
+      <motion.div
+        className="absolute inset-0 z-30 pointer-events-none bg-ink"
+        style={{ opacity: curtainOpacity }}
+      />
 
-        {/* ── Content — bottom-left, film-caption style ─────────────── */}
-        <div className="relative z-20 w-full px-8 md:px-16 pb-20 md:pb-24">
+      {/* ── Content + scroll indicator — parallax / exit-fade wrapper ── */}
+      {/*
+        Single motion wrapper applies y + opacity to everything at once.
+        Children keep their own initial/animate mount animations — those work
+        on separate elements so there is no opacity conflict with the parent.
+      */}
+      <motion.div
+        className="absolute inset-0 z-20 flex items-end"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
+        {/* Bottom-left text block */}
+        <div className="w-full px-8 md:px-16 pb-20 md:pb-24">
 
           <motion.p
             className="font-inter text-[9px] tracking-[0.55em] uppercase text-gold/45 mb-6"
@@ -216,9 +208,14 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ── Scroll indicator — right edge ────────────────────────── */}
+        {/* Scroll indicator — absolute inside parallax wrapper ────────── */}
+        {/*
+          Mount animation (initial/animate) is on this element.
+          Exit fade comes from the parent motion wrapper's opacity.
+          Different elements → no opacity conflict.
+        */}
         <motion.div
-          className="absolute right-9 bottom-9 z-20 flex flex-col items-center gap-3"
+          className="absolute right-9 bottom-9 flex flex-col items-center gap-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.5, duration: 1.2, ease: EASE }}
@@ -234,13 +231,13 @@ export default function HeroSection() {
             Scroll
           </span>
         </motion.div>
+      </motion.div>
 
-        {/* ── Bottom crossfade into next section ───────────────────── */}
-        <div
-          className="absolute bottom-0 inset-x-0 h-52 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to bottom, transparent, #050505)" }}
-        />
-      </div>
+      {/* ── Bottom crossfade — static, blends into About section ─────── */}
+      <div
+        className="absolute bottom-0 inset-x-0 h-52 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #050505)" }}
+      />
     </section>
   );
 }
