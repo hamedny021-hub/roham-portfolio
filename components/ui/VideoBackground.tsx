@@ -76,9 +76,11 @@ export default function VideoBackground({
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
       {/* Video — no loop, freezes on final frame */}
+      {/* scale-[0.88] on mobile = 12% zoom-out so more footage is visible.
+          md:scale-100 restores full-size on desktop — no change there. */}
       <video
         ref={videoRef}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
+        className={`absolute inset-0 w-full h-full object-cover scale-[0.88] md:scale-100 transition-opacity duration-[1200ms] ease-in-out ${
           ready ? "opacity-100" : "opacity-0"
         }`}
         muted

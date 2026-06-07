@@ -228,10 +228,7 @@ body {
     0 4px 24px rgba(5, 5, 5, 0.3);
 }
 
-/* ── Mobile override — glass must let footage breathe on small screens.
-   The desktop values (50%+ opacity, 28px blur) create an opaque wall on
-   375-430px phones. These values keep text readable while the video
-   remains clearly visible through the panel. Desktop is unaffected. */
+/* ── Mobile glass override — softer for general use (e.g. Contact) */
 @media (max-width: 767px) {
   .glass-card {
     background: rgba(8, 8, 8, 0.22);
@@ -246,6 +243,18 @@ body {
     -webkit-backdrop-filter: blur(10px) saturate(115%);
     border-color: rgba(212, 168, 67, 0.04);
     box-shadow: 0 4px 20px rgba(5, 5, 5, 0.25);
+  }
+
+  /* About + Skills: remove frame entirely. Text sits directly over video
+     like Services and Experience. The VideoBackground darkness overlay
+     keeps ivory text readable. */
+  #about .glass-card,
+  #skills .glass-card-warm {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
   }
 }
 
