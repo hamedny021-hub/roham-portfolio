@@ -6,22 +6,26 @@ import { motion, useScroll, useTransform }   from "framer-motion";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /**
- * Hero section — smooth autoplay video + Framer Motion scroll parallax.
+ * Hero section — play-once autoplay video + late-activating scroll parallax.
  *
- * Architecture
- * ────────────
- * Normal h-screen section. No sticky. No currentTime scrubbing. No GSAP.
- * The browser plays the video natively (autoPlay + loop). Scroll drives
- * CSS-only parallax transforms via Framer Motion MotionValues — zero seek
- * calls, zero frame drops.
+ * Video behavior
+ * ──────────────
+ * autoPlay + muted + playsInline — starts the moment the page loads.
+ * NO loop — when the video reaches its last frame the browser pauses there.
+ * The final frame stays frozen visibly; there is no jump back to frame 0.
+ * readyState guard + canplay fade-in prevents any black-flash before the
+ * video has loaded enough data to display.
  *
- * On scroll-away:
- *   • Video drifts upward (background parallax depth)
- *   • Content rises + fades (foreground parallax, faster than background)
- *   • Black curtain draws closed for a premium cinematic handoff to About
+ * Scroll effects (Framer Motion MotionValues — zero seek calls)
+ * ─────────────────────────────────────────────────────────────
+ * Effects are deliberately late-activating so the hero feels settled while
+ * the user reads the content, only transitioning when they scroll away:
+ *   0 – 40 % scroll : nothing moves except a very subtle video drift
+ *   40 – 60 % scroll : content starts to rise gently
+ *   60 – 95 % scroll : content fades + dark overlay deepens (cinematic exit)
  *
- * Video scale 1.18: oversizes the video 9% in every direction so the
- * upward drift (-8% max) never exposes the frame edge inside overflow-hidden.
+ * scale 1.18 on the video keeps a 9 % buffer on every edge so the -5 %
+ * upward drift never clips the frame inside overflow-hidden.
  */
 export default function HeroSection() {
   const sectionRef        = useRef<HTMLElement>(null);
@@ -36,19 +40,24 @@ export default function HeroSection() {
     offset: ["start start", "end start"],
   });
 
-  // ── Parallax transforms ───────────────────────────────────────────────
-  // Video: slow drift upward — background moves slower than content (depth)
-  // scale 1.18 is baked into the motion.video style to avoid CSS vs inline
-  // style conflicts when Framer Motion composes the transform string.
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  // ── Parallax transforms (all lazy — only activate near exit) ────────
+  //
+  // videoY: gentle upward drift from scroll start — background depth cue.
+  // Subtle enough to feel cinematic, not distracting during content reading.
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "-5%"]);
 
-  // Content: rises and fades as section exits — slightly faster than video
-  const contentY       = useTransform(scrollYProgress, [0, 1],            ["0%", "-6%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.45, 0.82],   [1, 0.95, 0]);
+  // contentY: content stays completely still until 40 % scroll, then rises.
+  // The [0.4, 1] input range clamps to "0%" below 40 % — zero movement while
+  // the user is reading; motion begins only when they're clearly leaving.
+  const contentY = useTransform(scrollYProgress, [0.4, 1], ["0%", "-5%"]);
 
-  // Black curtain: draws closed above everything — cinematic scene change
-  // Starts at 30% scroll (user is clearly leaving), fully closed at 90%.
-  const curtainOpacity = useTransform(scrollYProgress, [0.28, 0.90], [0, 1]);
+  // contentOpacity: full opacity until 60 %, fades to 0 at 95 %.
+  // Last third of the scroll is the fade window — never abrupt.
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.60, 0.95], [1, 1, 0]);
+
+  // curtainOpacity: dark overlay that deepens only in the last 35 % of scroll.
+  // Max 0.65 — keeps the transition feeling like a dissolve, not a blackout.
+  const curtainOpacity = useTransform(scrollYProgress, [0.60, 0.95], [0, 0.65]);
 
   // ── Video readiness ───────────────────────────────────────────────────
   useEffect(() => {
@@ -69,12 +78,17 @@ export default function HeroSection() {
       id="hero"
       className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-ink"
     >
-      {/* ── Video — native autoplay, no currentTime manipulation ─────── */}
+      {/* ── Video — plays once, freezes on last frame ───────────────── */}
       {/*
-        motion.video lets us put y + scale in the same Framer Motion style
-        object, so it composes them into one transform string. No CSS class
-        transform conflict. scale: 1.18 adds 9% buffer so the -8% y drift
-        never clips at the bottom.
+        autoPlay: starts immediately on page load (muted + playsInline required
+        for iOS autoplay policy).
+        NO loop attribute: when playback ends, the browser pauses on the final
+        frame. There is no jump back to frame 0, no flash, no restart.
+        transition-opacity + canplay guard: video fades in from invisible once
+        enough data is loaded — no black flash on slow connections.
+        motion.video: y + scale live in the same Framer Motion style object so
+        they compose into one transform string (no CSS-class vs inline conflict).
+        scale 1.18 → 9% safety buffer so -5% upward drift never clips the edge.
       */}
       <motion.video
         ref={videoRef}
@@ -85,7 +99,6 @@ export default function HeroSection() {
         muted
         playsInline
         autoPlay
-        loop
         preload="auto"
       >
         <source src="/videos/01-bean-hero.MP4" type="video/mp4" />
@@ -114,10 +127,12 @@ export default function HeroSection() {
         }}
       />
 
-      {/* ── Exit curtain — above all content, pointer-events-none ────── */}
+      {/* ── Exit curtain — dark dissolve, only in last 35 % of scroll ── */}
       {/*
-        Sits at z-30 so it darkens the entire scene (video + text) together.
-        pointer-events-none: CTAs remain clickable if user stops mid-scroll.
+        z-30: darkens the full scene (video + text) as one unit — cinematic.
+        Max opacity 0.65: a dissolve, not a blackout. About section is visible
+        behind it before the hero fully exits the viewport.
+        pointer-events-none: buttons remain fully clickable throughout.
       */}
       <motion.div
         className="absolute inset-0 z-30 pointer-events-none bg-ink"
