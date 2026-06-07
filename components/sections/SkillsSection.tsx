@@ -49,14 +49,14 @@ export default function SkillsSection() {
             {disciplines.map((d, di) => (
               <SectionReveal key={d.cat} delay={0.1 + di * 0.1}>
                 <div>
-                  <p className="font-sans text-[8px] tracking-[0.45em] uppercase text-gold/50 mb-4">
+                  <p className="font-sans text-[8px] tracking-[0.45em] uppercase text-gold/75 mb-4">
                     {d.cat}
                   </p>
                   <div className="flex flex-col gap-2.5">
                     {d.items.map(item => (
                       <p
                         key={item}
-                        className="font-sans text-[12px] text-ivory/55 font-light tracking-[0.02em]"
+                        className="font-sans text-[12px] text-ivory/88 font-light tracking-[0.02em]"
                       >
                         {item}
                       </p>
