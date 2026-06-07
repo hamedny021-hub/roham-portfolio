@@ -7,12 +7,15 @@ import { motion, useScroll, useTransform, useReducedMotion }    from "framer-mot
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /**
- * Hero section — play-once video + cinematic entrance + scroll parallax.
+ * Hero section — IntersectionObserver video lifecycle + cinematic entrance + scroll parallax.
  *
- * Video: autoPlay, NO loop. Browser pauses on final frame naturally.
- * Font: Cormorant Garamond for ROHAM + tagline — classical thick/thin serif
- *       contrast that reads as luxury at any size.
- * Overlays: significantly lighter than before so video detail is visible.
+ * Video: IntersectionObserver restarts from frame 0 on every viewport entry.
+ *        No autoPlay — observer fires immediately on mount (Hero is above fold)
+ *        and again on every scroll-back, so the video always replays cleanly.
+ *        No loop — freezes on final frame until next entry.
+ *        Matches VideoBackground behavior used by all other sections.
+ * Font: Cormorant Garamond for ROHAM + tagline — classical thick/thin serif.
+ * Overlays: lighter so coffee-bean detail is visible.
  * Animations: staggered, blur-to-sharp on tagline, respects prefers-reduced-motion.
  * Scroll: late-activating parallax (effects only when user is leaving section).
  */
@@ -38,14 +41,48 @@ export default function HeroSection() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.60, 0.95], [1, 1, 0]);
   const curtainOpacity = useTransform(scrollYProgress, [0.60, 0.95],    [0, 0.65]);
 
-  // ── Video readiness ─────────────────────────────────────────────────
+  // ── Video lifecycle — same pattern as VideoBackground ───────────────
+  // IntersectionObserver restarts playback from frame 0 every time the
+  // Hero section enters the viewport. This fixes the "frozen last frame
+  // on scroll-back" bug: autoPlay only fires once on mount; without an
+  // observer the video stays stuck when the user returns to the top.
   useEffect(() => {
     const v = videoRef.current;
-    if (!v) return;
-    if (v.readyState >= 3) { setReady(true); return; }
+    const s = sectionRef.current;
+    if (!v || !s) return;
+
+    // Fade video in as soon as the browser can render a frame
     const onCanPlay = () => setReady(true);
-    v.addEventListener("canplay", onCanPlay, { once: true });
-    return () => v.removeEventListener("canplay", onCanPlay);
+    if (v.readyState >= 3) {
+      setReady(true);
+    } else {
+      v.addEventListener("canplay", onCanPlay);
+    }
+
+    // Restart from frame 0 on every section entry — mirrors VideoBackground
+    const playFromStart = () => {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          playFromStart();
+        } else {
+          v.pause();
+          v.currentTime = 0; // pre-cue so replay starts cleanly
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(s);
+
+    return () => {
+      observer.disconnect();
+      v.removeEventListener("canplay", onCanPlay);
+    };
   }, []);
 
   return (
@@ -56,7 +93,9 @@ export default function HeroSection() {
     >
 
       {/* ── VIDEO ──────────────────────────────────────────────────────── */}
-      {/* plays once, freezes on last frame (no loop), fades in via canplay */}
+      {/* IntersectionObserver (above) handles play/pause/restart.
+          No autoPlay — observer fires on mount since Hero is above fold,
+          and restarts on every re-entry so scroll-back always replays. */}
       <motion.video
         ref={videoRef}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1000ms] ease-in-out ${
@@ -65,7 +104,6 @@ export default function HeroSection() {
         style={{ objectPosition: "center 40%", y: videoY, scale: 1.18 }}
         muted
         playsInline
-        autoPlay
         preload="auto"
       >
         <source src="/videos/01-bean-hero.MP4" type="video/mp4" />
