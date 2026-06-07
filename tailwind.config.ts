@@ -9,8 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        bodoni: ["var(--font-bodoni)", "Georgia", "serif"],
-        inter:  ["var(--font-inter)", "system-ui", "sans-serif"],
+        bodoni:    ["var(--font-bodoni)",    "Georgia", "serif"],
+        cormorant: ["var(--font-cormorant)", "Georgia", "serif"],
+        inter:     ["var(--font-inter)",     "system-ui", "sans-serif"],
       },
       colors: {
         gold: {

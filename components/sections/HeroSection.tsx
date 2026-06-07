@@ -1,72 +1,48 @@
 "use client";
 
-import { useEffect, useRef, useState }       from "react";
-import { motion, useScroll, useTransform }   from "framer-motion";
+import { useEffect, useRef, useState }                          from "react";
+import { motion, useScroll, useTransform, useReducedMotion }    from "framer-motion";
 
+// Expo-out easing — the luxury / Apple motion language
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /**
- * Hero section — play-once autoplay video + late-activating scroll parallax.
+ * Hero section — play-once video + cinematic entrance + scroll parallax.
  *
- * Video behavior
- * ──────────────
- * autoPlay + muted + playsInline — starts the moment the page loads.
- * NO loop — when the video reaches its last frame the browser pauses there.
- * The final frame stays frozen visibly; there is no jump back to frame 0.
- * readyState guard + canplay fade-in prevents any black-flash before the
- * video has loaded enough data to display.
- *
- * Scroll effects (Framer Motion MotionValues — zero seek calls)
- * ─────────────────────────────────────────────────────────────
- * Effects are deliberately late-activating so the hero feels settled while
- * the user reads the content, only transitioning when they scroll away:
- *   0 – 40 % scroll : nothing moves except a very subtle video drift
- *   40 – 60 % scroll : content starts to rise gently
- *   60 – 95 % scroll : content fades + dark overlay deepens (cinematic exit)
- *
- * scale 1.18 on the video keeps a 9 % buffer on every edge so the -5 %
- * upward drift never clips the frame inside overflow-hidden.
+ * Video: autoPlay, NO loop. Browser pauses on final frame naturally.
+ * Font: Cormorant Garamond for ROHAM + tagline — classical thick/thin serif
+ *       contrast that reads as luxury at any size.
+ * Overlays: significantly lighter than before so video detail is visible.
+ * Animations: staggered, blur-to-sharp on tagline, respects prefers-reduced-motion.
+ * Scroll: late-activating parallax (effects only when user is leaving section).
  */
 export default function HeroSection() {
   const sectionRef        = useRef<HTMLElement>(null);
   const videoRef          = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
 
-  // ── Scroll progress ───────────────────────────────────────────────────
-  // 0 = hero top aligned with viewport top (section fully visible)
-  // 1 = hero bottom aligned with viewport top (section has exited)
+  // Respects the OS / browser "reduce motion" accessibility setting.
+  // When true: all y/blur animations are skipped; only opacity fades remain,
+  // and durations are near-instant so the page still feels responsive.
+  const pRM = useReducedMotion();
+
+  // ── Scroll progress ─────────────────────────────────────────────────
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
 
-  // ── Parallax transforms (all lazy — only activate near exit) ────────
-  //
-  // videoY: gentle upward drift from scroll start — background depth cue.
-  // Subtle enough to feel cinematic, not distracting during content reading.
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "-5%"]);
-
-  // contentY: content stays completely still until 40 % scroll, then rises.
-  // The [0.4, 1] input range clamps to "0%" below 40 % — zero movement while
-  // the user is reading; motion begins only when they're clearly leaving.
-  const contentY = useTransform(scrollYProgress, [0.4, 1], ["0%", "-5%"]);
-
-  // contentOpacity: full opacity until 60 %, fades to 0 at 95 %.
-  // Last third of the scroll is the fade window — never abrupt.
+  // ── Parallax (late-activating — only fire when user is leaving) ─────
+  const videoY         = useTransform(scrollYProgress, [0, 1],          ["0%", "-5%"]);
+  const contentY       = useTransform(scrollYProgress, [0.4, 1],        ["0%", "-5%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.60, 0.95], [1, 1, 0]);
+  const curtainOpacity = useTransform(scrollYProgress, [0.60, 0.95],    [0, 0.65]);
 
-  // curtainOpacity: dark overlay that deepens only in the last 35 % of scroll.
-  // Max 0.65 — keeps the transition feeling like a dissolve, not a blackout.
-  const curtainOpacity = useTransform(scrollYProgress, [0.60, 0.95], [0, 0.65]);
-
-  // ── Video readiness ───────────────────────────────────────────────────
+  // ── Video readiness ─────────────────────────────────────────────────
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-
-    // readyState 3 = HAVE_FUTURE_DATA — enough to start showing the video
     if (v.readyState >= 3) { setReady(true); return; }
-
     const onCanPlay = () => setReady(true);
     v.addEventListener("canplay", onCanPlay, { once: true });
     return () => v.removeEventListener("canplay", onCanPlay);
@@ -78,18 +54,9 @@ export default function HeroSection() {
       id="hero"
       className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-ink"
     >
-      {/* ── Video — plays once, freezes on last frame ───────────────── */}
-      {/*
-        autoPlay: starts immediately on page load (muted + playsInline required
-        for iOS autoplay policy).
-        NO loop attribute: when playback ends, the browser pauses on the final
-        frame. There is no jump back to frame 0, no flash, no restart.
-        transition-opacity + canplay guard: video fades in from invisible once
-        enough data is loaded — no black flash on slow connections.
-        motion.video: y + scale live in the same Framer Motion style object so
-        they compose into one transform string (no CSS-class vs inline conflict).
-        scale 1.18 → 9% safety buffer so -5% upward drift never clips the edge.
-      */}
+
+      {/* ── VIDEO ──────────────────────────────────────────────────────── */}
+      {/* plays once, freezes on last frame (no loop), fades in via canplay */}
       <motion.video
         ref={videoRef}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1000ms] ease-in-out ${
@@ -104,109 +71,119 @@ export default function HeroSection() {
         <source src="/videos/01-bean-hero.MP4" type="video/mp4" />
       </motion.video>
 
-      {/* ── Static overlays — permanent cinematic depth ──────────────── */}
+      {/* ── OVERLAYS (significantly lighter than before) ────────────────
+          Previous: base tint 0.38, bottom gradient 0.95 — crushed all detail.
+          Now:      base tint 0.16, bottom gradient 0.80 — video detail visible
+          while the text area remains dark enough for perfect readability.
+      ─────────────────────────────────────────────────────────────────── */}
+
+      {/* Warm espresso base tint — just a whisper of colour temperature */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
-        style={{ background: "rgba(8,5,3,0.38)" }}
+        style={{ background: "rgba(8,5,3,0.16)" }}
       />
+
+      {/* Vignette edges + top/bottom gradient */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
           background: `
             radial-gradient(ellipse at 55% 45%,
-              transparent 28%,
-              rgba(5,5,5,0.50) 100%
+              transparent 30%,
+              rgba(5,5,5,0.25) 100%
             ),
             linear-gradient(to bottom,
-              rgba(5,5,5,0.30) 0%,
-              transparent      18%,
-              transparent      52%,
-              rgba(5,5,5,0.95) 100%
+              rgba(5,5,5,0.16) 0%,
+              transparent      22%,
+              transparent      50%,
+              rgba(5,5,5,0.80) 100%
             )
           `,
         }}
       />
 
-      {/* ── Exit curtain — dark dissolve, only in last 35 % of scroll ── */}
-      {/*
-        z-30: darkens the full scene (video + text) as one unit — cinematic.
-        Max opacity 0.65: a dissolve, not a blackout. About section is visible
-        behind it before the hero fully exits the viewport.
-        pointer-events-none: buttons remain fully clickable throughout.
-      */}
+      {/* Exit curtain — cinematic dissolve, only last 35 % of scroll */}
       <motion.div
         className="absolute inset-0 z-30 pointer-events-none bg-ink"
         style={{ opacity: curtainOpacity }}
       />
 
-      {/* ── Content + scroll indicator — parallax / exit-fade wrapper ── */}
-      {/*
-        Single motion wrapper applies y + opacity to everything at once.
-        Children keep their own initial/animate mount animations — those work
-        on separate elements so there is no opacity conflict with the parent.
-      */}
+      {/* ── CONTENT + SCROLL INDICATOR ─────────────────────────────────
+          Outer wrapper handles scroll parallax + exit fade.
+          Inner children run their own entrance animations independently
+          — different DOM elements, so no opacity conflict with the parent.
+      ─────────────────────────────────────────────────────────────────── */}
       <motion.div
         className="absolute inset-0 z-20 flex items-end"
         style={{ y: contentY, opacity: contentOpacity }}
       >
-        {/* Bottom-left text block */}
         <div className="w-full px-8 md:px-16 pb-20 md:pb-24">
 
+          {/* Location — quiet gold label, appears first */}
           <motion.p
-            className="font-inter text-[9px] tracking-[0.55em] uppercase text-gold/45 mb-6"
-            initial={{ opacity: 0 }}
+            className="font-inter text-[9px] tracking-[0.55em] uppercase text-gold/55 mb-5"
+            initial={{ opacity: pRM ? 1 : 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.4, delay: 0.8, ease: EASE }}
+            transition={{ duration: 1.2, delay: pRM ? 0 : 0.25, ease: EASE }}
           >
             Toronto, Canada
           </motion.p>
 
-          {/* Name — cinematic rise from below */}
-          <div className="overflow-hidden mb-5">
+          {/* ── ROHAM — primary brand mark ──────────────────────────────
+              Cormorant Garamond bold: the high contrast thick/thin strokes of
+              a classical book serif make this instantly read as luxury.
+              Larger than before. Wider tracking. Clipped-container mask
+              lets the upward slide emerge from nothing — cinematic reveal.
+          ─────────────────────────────────────────────────────────────── */}
+          <div className="overflow-hidden mb-6">
             <motion.h1
-              className="font-bodoni font-black leading-[0.88] tracking-[0.14em]"
-              style={{ fontSize: "clamp(3rem, 8.5vw, 6.5rem)" }}
-              initial={{ y: "100%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 1.2, delay: 0.9, ease: EASE }}
+              className="font-cormorant font-bold leading-[0.88]"
+              style={{ fontSize: "clamp(3.5rem, 10vw, 8.5rem)", letterSpacing: "0.18em" }}
+              initial={{ opacity: pRM ? 1 : 0, y: pRM ? 0 : "108%" }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.35, delay: pRM ? 0 : 0.55, ease: EASE }}
             >
               <span className="gold-shimmer">ROHAM</span>
             </motion.h1>
           </div>
 
-          {/* Roles */}
-          <motion.div
-            className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-7"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.0, delay: 1.4, ease: EASE }}
-          >
-            {["Barista", "Hospitality Professional", "Team Leader"].map((r, i) => (
-              <span key={r} className="flex items-center gap-4">
-                <span className="font-inter text-[10px] tracking-[0.22em] uppercase text-ivory/50 font-light">
-                  {r}
+          {/* Roles — individual staggered slide-in from the left */}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mb-8">
+            {["Barista", "Hospitality Professional", "Team Leader"].map((role, i) => (
+              <motion.span
+                key={role}
+                className="flex items-center gap-4"
+                initial={{ opacity: pRM ? 1 : 0, x: pRM ? 0 : -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.85, delay: pRM ? 0 : 1.15 + i * 0.13, ease: EASE }}
+              >
+                <span className="font-inter text-[10px] tracking-[0.26em] uppercase text-ivory/55 font-light">
+                  {role}
                 </span>
-                {i < 2 && <span className="text-gold/22 text-[7px]">·</span>}
-              </span>
+                {i < 2 && <span className="text-gold/30 text-[6px]">·</span>}
+              </motion.span>
             ))}
-          </motion.div>
+          </div>
 
-          {/* Tagline */}
+          {/* Tagline — blur-to-sharp reveal, Cormorant italic for elegance */}
           <motion.p
-            className="font-bodoni italic text-base md:text-lg text-ivory/28 tracking-wide mb-9"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.0, delay: 1.7, ease: EASE }}
+            className="font-cormorant italic text-lg md:text-xl text-ivory/42 tracking-wide mb-10"
+            initial={{
+              opacity: pRM ? 1 : 0,
+              filter:  pRM ? "blur(0px)" : "blur(10px)",
+            }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, delay: pRM ? 0 : 1.65, ease: EASE }}
           >
             Where coffee craft meets creative direction.
           </motion.p>
 
-          {/* CTAs */}
+          {/* CTAs — fade up together */}
           <motion.div
             className="flex items-center gap-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.0, delay: 2.0, ease: EASE }}
+            initial={{ opacity: pRM ? 1 : 0, y: pRM ? 0 : 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: pRM ? 0 : 2.1, ease: EASE }}
           >
             <a
               href="#experience"
@@ -216,39 +193,34 @@ export default function HeroSection() {
             </a>
             <a
               href="#contact"
-              className="font-inter text-[10px] tracking-[0.25em] uppercase text-ivory/28 hover:text-ivory/58 transition-colors duration-500"
+              className="font-inter text-[10px] tracking-[0.25em] uppercase text-ivory/30 hover:text-ivory/60 transition-colors duration-500"
             >
               Get in Touch
             </a>
           </motion.div>
         </div>
 
-        {/* Scroll indicator — absolute inside parallax wrapper ────────── */}
-        {/*
-          Mount animation (initial/animate) is on this element.
-          Exit fade comes from the parent motion wrapper's opacity.
-          Different elements → no opacity conflict.
-        */}
+        {/* Scroll indicator — fades in last, fades out with content on scroll */}
         <motion.div
           className="absolute right-9 bottom-9 flex flex-col items-center gap-3"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.5, duration: 1.2, ease: EASE }}
+          initial={{ opacity: pRM ? 1 : 0, y: pRM ? 0 : 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.0, delay: pRM ? 0 : 2.55, ease: EASE }}
         >
           <div
             className="w-px h-12 origin-top"
             style={{
-              background: "linear-gradient(to bottom, rgba(212,168,67,0.38), transparent)",
+              background: "linear-gradient(to bottom, rgba(212,168,67,0.40), transparent)",
               animation: "scrollPulse 2.8s ease-in-out infinite",
             }}
           />
-          <span className="font-inter text-[7px] tracking-[0.45em] uppercase text-ivory/16">
+          <span className="font-inter text-[7px] tracking-[0.45em] uppercase text-ivory/20">
             Scroll
           </span>
         </motion.div>
       </motion.div>
 
-      {/* ── Bottom crossfade — static, blends into About section ─────── */}
+      {/* Bottom crossfade — static, blends hero into About section */}
       <div
         className="absolute bottom-0 inset-x-0 h-52 z-10 pointer-events-none"
         style={{ background: "linear-gradient(to bottom, transparent, #050505)" }}

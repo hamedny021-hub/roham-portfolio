@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
+import { Bodoni_Moda, Cormorant_Garamond, Inter } from "next/font/google";
 import ScrollProgress    from "@/components/ui/ScrollProgress";
 import AmbientParticles  from "@/components/ui/AmbientParticles";
 import CustomCursor      from "@/components/ui/CustomCursor";
@@ -11,6 +11,17 @@ const bodoni = Bodoni_Moda({
   display: "swap",
   style: ["normal", "italic"],
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+// Cormorant Garamond — primary display font for luxury hero typography.
+// The classical thick-thin stroke contrast gives ROHAM an instant high-end
+// editorial presence that Bodoni Moda cannot achieve at display sizes.
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  display: "swap",
+  style: ["normal", "italic"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const inter = Inter({
@@ -35,7 +46,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${bodoni.variable} ${inter.variable} bg-ink text-ivory antialiased grain-overlay`}>
+      <body className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} bg-ink text-ivory antialiased grain-overlay`}>
         <CustomCursor />
         <ScrollProgress />
         <AmbientParticles />
