@@ -68,12 +68,14 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────
-   CUSTOM CURSOR — only hide native cursor on pointer devices.
-   Touch screens (pointer: coarse) keep the default OS behavior.
+   CUSTOM CURSOR
+   The native cursor is NEVER hidden via CSS. Hiding it in CSS
+   creates a permanent blank cursor if the JS component fails to
+   mount (SSR, hydration lag, deploy cold-start, etc.).
+   The custom ring in CustomCursor.tsx is a purely additive overlay —
+   it coexists with the native cursor on desktop and is not rendered
+   at all on touch/mobile devices.
 ───────────────────────────────────────────────────── */
-@media (pointer: fine) {
-  * { cursor: none !important; }
-}
 
 /* ─────────────────────────────────────────────────────
    GRAIN TEXTURE — Very subtle premium noise

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Inter } from "next/font/google";
 import ScrollProgress    from "@/components/ui/ScrollProgress";
-import AmbientParticles from "@/components/ui/AmbientParticles";
+import AmbientParticles  from "@/components/ui/AmbientParticles";
+import CustomCursor      from "@/components/ui/CustomCursor";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${bodoni.variable} ${inter.variable} bg-ink text-ivory antialiased grain-overlay`}>
+        <CustomCursor />
         <ScrollProgress />
         <AmbientParticles />
 
