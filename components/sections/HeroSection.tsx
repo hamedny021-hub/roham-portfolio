@@ -231,7 +231,7 @@ export default function HeroSection() {
             </a>
             <a
               href="#contact"
-              className="font-sans text-[10px] tracking-[0.25em] uppercase text-ivory/30 hover:text-ivory/60 transition-colors duration-500"
+              className="font-sans text-[10px] tracking-[0.25em] uppercase text-ivory/60 hover:text-gold transition-colors duration-500 hover-gold"
             >
               Get in Touch
             </a>

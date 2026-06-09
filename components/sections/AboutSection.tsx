@@ -17,7 +17,7 @@ export default function AboutSection() {
       {/* Plays once, freezes on last frame. Let the video breathe. */}
       <VideoBackground
         src="/videos/02-grinding.MP4"
-        darkness={0.30}
+        darkness={0.44}
         warmTint
       />
 
@@ -72,13 +72,13 @@ export default function AboutSection() {
                 ["Location",   "Toronto, Ontario"],
                 ["Experience", "7+ Years"],
                 ["Languages",  "English · Farsi"],
-                ["Status",     "Open to Opportunities"],
+                ["Education",  "Associate Degree in Hotel Management"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-baseline gap-4">
-                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/22 w-24 flex-shrink-0">
+                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-gold/65 w-24 flex-shrink-0">
                     {k}
                   </span>
-                  <span className="font-sans text-[12px] text-ivory/60 font-light">{v}</span>
+                  <span className="font-sans text-[12px] text-ivory/90 font-normal">{v}</span>
                 </div>
               ))}
             </div>
@@ -95,7 +95,7 @@ export default function AboutSection() {
               </a>
               <a
                 href="#contact"
-                className="font-sans text-[10px] tracking-[0.25em] uppercase text-ivory/28 hover:text-gold/60 transition-colors duration-500 hover-gold"
+                className="font-sans text-[10px] tracking-[0.25em] uppercase text-ivory/60 hover:text-gold transition-colors duration-500 hover-gold"
               >
                 Let's Talk
               </a>
@@ -117,10 +117,10 @@ export default function AboutSection() {
             7+
           </p>
           <div>
-            <p className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/35">
+            <p className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/55">
               Years of Craft
             </p>
-            <p className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/20 mt-0.5">
+            <p className="font-sans text-[8px] tracking-[0.35em] uppercase text-ivory/40 mt-0.5">
               Two Countries
             </p>
           </div>

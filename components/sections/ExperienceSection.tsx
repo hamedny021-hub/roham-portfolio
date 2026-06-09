@@ -42,7 +42,7 @@ export default function ExperienceSection() {
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
     >
       {/* 05-tamping.MP4 */}
-      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.38} warmTint />
+      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.46} warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
@@ -81,16 +81,16 @@ export default function ExperienceSection() {
               transition={{ duration: 1.0, delay: 0.15 + i * 0.1, ease: EASE }}
             >
               {/* Period */}
-              <span className="font-sans text-[9px] tracking-[0.2em] text-ivory/58 w-28 flex-shrink-0">
+              <span className="font-sans text-[9px] tracking-[0.2em] text-gold/70 w-28 flex-shrink-0">
                 {job.period}
               </span>
 
               {/* Role + venue */}
               <div>
-                <p className="font-brand font-semibold text-base md:text-lg text-ivory/95 leading-tight">
+                <p className="font-brand font-semibold text-base md:text-lg text-white leading-tight">
                   {job.role}
                 </p>
-                <p className="font-sans text-[11px] text-ivory/65 font-light mt-0.5 tracking-[0.02em]">
+                <p className="font-sans text-[11px] text-ivory/78 font-normal mt-0.5 tracking-[0.02em]">
                   {job.company} · {job.location}
                 </p>
               </div>

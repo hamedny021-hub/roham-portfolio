@@ -198,26 +198,29 @@ body {
    GLASSMORPHISM — premium frosted glass effects
 ───────────────────────────────────────────────────── */
 
-/* Glass card — for content overlaying video backgrounds */
+/* Glass card — for content overlaying video backgrounds.
+   Darker base + inner gradient = strong text contrast while staying glassy. */
 .glass-card {
-  background: rgba(10, 10, 10, 0.5);
-  backdrop-filter: blur(28px) saturate(130%);
-  -webkit-backdrop-filter: blur(28px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.065);
+  background:
+    linear-gradient(135deg, rgba(6,6,6,0.78), rgba(8,8,8,0.62));
+  backdrop-filter: blur(30px) saturate(130%);
+  -webkit-backdrop-filter: blur(30px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 8px 40px rgba(5, 5, 5, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 8px 44px rgba(5, 5, 5, 0.62),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* Glass card with warm espresso tint */
 .glass-card-warm {
-  background: rgba(18, 10, 6, 0.52);
-  backdrop-filter: blur(28px) saturate(130%);
-  -webkit-backdrop-filter: blur(28px) saturate(130%);
-  border: 1px solid rgba(212, 168, 67, 0.08);
+  background:
+    linear-gradient(135deg, rgba(12,7,4,0.80), rgba(16,9,5,0.64));
+  backdrop-filter: blur(30px) saturate(130%);
+  -webkit-backdrop-filter: blur(30px) saturate(130%);
+  border: 1px solid rgba(212, 168, 67, 0.10);
   box-shadow:
-    0 8px 40px rgba(5, 5, 5, 0.55),
-    inset 0 1px 0 rgba(212, 168, 67, 0.04);
+    0 8px 44px rgba(5, 5, 5, 0.62),
+    inset 0 1px 0 rgba(212, 168, 67, 0.05);
 }
 
 /* Glass nav */
@@ -248,16 +251,21 @@ body {
     box-shadow: 0 4px 20px rgba(5, 5, 5, 0.25);
   }
 
-  /* About + Skills: remove frame entirely. Text sits directly over video
-     like Services and Experience. The VideoBackground darkness overlay
-     keeps ivory text readable. */
+  /* About + Skills on mobile: drop the hard frame but keep a soft vertical
+     scrim so body text stays crisp against the brighter video footage.
+     A light blur + dark gradient = readable without a boxy card look. */
   #about .glass-card,
   #skills .glass-card-warm {
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(5,5,5,0.30) 0%,
+      rgba(5,5,5,0.68) 100%
+    );
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: none;
     box-shadow: none;
+    border-radius: 14px;
   }
 }
 
@@ -289,22 +297,54 @@ body {
 .btn-gold {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(212,168,67,0.45);
+  border: 1px solid rgba(212,168,67,0.55);
   color: var(--gold);
-  transition: color 0.5s ease;
+  transition:
+    color 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease,
+    transform 0.4s var(--ease-expo);
   isolation: isolate;
+  will-change: transform;
 }
+/* Cinematic gold gradient fill — sweeps in from the left edge */
 .btn-gold::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--gold);
-  transform: translateY(101%);
+  background: linear-gradient(
+    105deg,
+    var(--gold-dim)   0%,
+    var(--gold)       45%,
+    var(--gold-light) 100%
+  );
+  transform: translateX(-101%);
   transition: transform 0.55s var(--ease-expo);
   z-index: -1;
 }
-.btn-gold:hover::before { transform: translateY(0); }
-.btn-gold:hover { color: var(--ink); }
+.btn-gold:hover::before { transform: translateX(0); }
+.btn-gold:hover {
+  color: var(--ink);
+  border-color: rgba(212,168,67,0.95);
+  /* Subtle gold bloom — the button feels lit from within */
+  box-shadow:
+    0 0 26px rgba(212,168,67,0.30),
+    0 0 6px  rgba(212,168,67,0.45);
+  transform: scale(1.025);
+}
+/* Desktop press feedback */
+.btn-gold:active { transform: scale(0.985); }
+
+/* Touch devices — :active mirrors the full hover state so taps feel alive */
+@media (hover: none) {
+  .btn-gold:active::before { transform: translateX(0); }
+  .btn-gold:active {
+    color: var(--ink);
+    border-color: rgba(212,168,67,0.95);
+    box-shadow: 0 0 22px rgba(212,168,67,0.28);
+    transform: scale(0.99);
+  }
+}
 
 /* ─────────────────────────────────────────────────────
    SECTION LABEL  (eyebrow / section number)
@@ -368,13 +408,14 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Refined body copy — Inter 300, generous leading */
+/* Refined body copy — Inter 400, generous leading.
+   Brightened for readability over video backgrounds. */
 .body-refined {
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 14px;
   line-height: 1.9;
-  color: rgba(249,245,238,0.5);
+  color: rgba(249,245,238,0.86);
   letter-spacing: 0.01em;
 }
 
