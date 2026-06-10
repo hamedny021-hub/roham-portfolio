@@ -195,74 +195,49 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────
-   GLASSMORPHISM — premium frosted glass effects
+   CONTENT SCRIMS — video-first (NO backdrop blur)
+   The cinematic footage must stay sharp and clearly visible.
+   Instead of frosting the video with a heavy glass panel, we lift text
+   legibility with a soft semi-transparent gradient + text-shadows
+   (.text-cinematic). The motion shows through crisply at all times.
 ───────────────────────────────────────────────────── */
 
-/* Glass card — for content overlaying video backgrounds.
-   Darker base + inner gradient = strong text contrast while staying glassy. */
+/* About panel scrim — soft directional gradient, video fully visible. */
 .glass-card {
-  background:
-    linear-gradient(135deg, rgba(6,6,6,0.78), rgba(8,8,8,0.62));
-  backdrop-filter: blur(30px) saturate(130%);
-  -webkit-backdrop-filter: blur(30px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 8px 44px rgba(5, 5, 5, 0.62),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: linear-gradient(160deg, rgba(5,5,5,0.34) 0%, rgba(5,5,5,0.10) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
 }
 
-/* Glass card with warm espresso tint */
+/* Skills panel scrim — warm-tinted, same no-blur treatment. */
 .glass-card-warm {
-  background:
-    linear-gradient(135deg, rgba(12,7,4,0.80), rgba(16,9,5,0.64));
-  backdrop-filter: blur(30px) saturate(130%);
-  -webkit-backdrop-filter: blur(30px) saturate(130%);
-  border: 1px solid rgba(212, 168, 67, 0.10);
-  box-shadow:
-    0 8px 44px rgba(5, 5, 5, 0.62),
-    inset 0 1px 0 rgba(212, 168, 67, 0.05);
+  background: linear-gradient(160deg, rgba(12,7,4,0.36) 0%, rgba(12,7,4,0.10) 100%);
+  border: 1px solid rgba(212, 168, 67, 0.07);
+  border-radius: 16px;
 }
 
-/* Glass nav */
+/* Glass nav — thin top bar only, so a light blur here never hides the
+   storytelling footage. Kept for that premium frosted-edge feel. */
 .glass-nav {
   background: rgba(5, 5, 5, 0.28);
-  backdrop-filter: blur(40px) saturate(160%);
-  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.042);
   box-shadow:
     0 1px 0 rgba(212, 168, 67, 0.055),
     0 4px 24px rgba(5, 5, 5, 0.3);
 }
 
-/* ── Mobile glass override — softer for general use (e.g. Contact) */
+/* Mobile: same no-blur scrim, marginally stronger for small dark screens.
+   Video remains fully visible — no frosting, no large blurred container. */
 @media (max-width: 767px) {
-  .glass-card {
-    background: rgba(8, 8, 8, 0.22);
-    backdrop-filter: blur(10px) saturate(115%);
-    -webkit-backdrop-filter: blur(10px) saturate(115%);
-    border-color: rgba(255, 255, 255, 0.025);
-    box-shadow: 0 4px 20px rgba(5, 5, 5, 0.25);
-  }
-  .glass-card-warm {
-    background: rgba(14, 8, 4, 0.24);
-    backdrop-filter: blur(10px) saturate(115%);
-    -webkit-backdrop-filter: blur(10px) saturate(115%);
-    border-color: rgba(212, 168, 67, 0.04);
-    box-shadow: 0 4px 20px rgba(5, 5, 5, 0.25);
-  }
-
-  /* About + Skills on mobile: drop the hard frame but keep a soft vertical
-     scrim so body text stays crisp against the brighter video footage.
-     A light blur + dark gradient = readable without a boxy card look. */
   #about .glass-card,
   #skills .glass-card-warm {
     background: linear-gradient(
       to bottom,
-      rgba(5,5,5,0.30) 0%,
-      rgba(5,5,5,0.68) 100%
+      rgba(5,5,5,0.20) 0%,
+      rgba(5,5,5,0.50) 100%
     );
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
     border: none;
     box-shadow: none;
     border-radius: 14px;
@@ -374,12 +349,14 @@ body {
   font-weight: 800;
 }
 
-/* Section h2 — Plus Jakarta Sans SemiBold */
+/* Section h2 — Plus Jakarta Sans SemiBold.
+   Soft shadow lifts the heading off the video without a panel. */
 .section-title {
   font-family: var(--font-brand);
   line-height: 1.05;
   letter-spacing: 0.01em;
   font-weight: 600;
+  text-shadow: 0 2px 28px rgba(0,0,0,0.50), 0 1px 4px rgba(0,0,0,0.40);
 }
 
 /* Eyebrow label — Space Grotesk, small caps */
@@ -409,14 +386,15 @@ body {
 }
 
 /* Refined body copy — Inter 400, generous leading.
-   Brightened for readability over video backgrounds. */
+   Brightened + soft shadow so it stays crisp over visible video. */
 .body-refined {
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 1.9;
-  color: rgba(249,245,238,0.86);
+  color: rgba(249,245,238,0.88);
   letter-spacing: 0.01em;
+  text-shadow: 0 1px 14px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.35);
 }
 
 /* Navigation link */
@@ -552,6 +530,16 @@ body {
 @layer utilities {
   .text-balance  { text-wrap: balance; }
   .font-300      { font-weight: 300; }
+
+  /* Cinematic legibility — subtle shadow lifts small text off the video
+     without any panel/blur. Use on labels, list items, metadata over footage. */
+  .text-cinematic {
+    text-shadow: 0 1px 10px rgba(0,0,0,0.50), 0 1px 3px rgba(0,0,0,0.45);
+  }
+  /* Stronger variant for prominent floating titles (e.g. job roles) */
+  .text-cinematic-strong {
+    text-shadow: 0 2px 18px rgba(0,0,0,0.60), 0 1px 4px rgba(0,0,0,0.55);
+  }
 
   /* Warm espresso background tints */
   .bg-espresso-tint {

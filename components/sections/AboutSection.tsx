@@ -17,7 +17,7 @@ export default function AboutSection() {
       {/* Plays once, freezes on last frame. Let the video breathe. */}
       <VideoBackground
         src="/videos/02-grinding.MP4"
-        darkness={0.44}
+        darkness={0.28}
         warmTint
       />
 
@@ -44,7 +44,7 @@ export default function AboutSection() {
           </SectionReveal>
 
           {/* Heading */}
-          <SectionReveal delay={0.1}>
+          <SectionReveal delay={0.1} blur>
             <h2
               className="section-title text-ivory mb-4 md:mb-6"
               style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)" }}
@@ -75,10 +75,10 @@ export default function AboutSection() {
                 ["Education",  "Associate Degree in Hotel Management"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-baseline gap-4">
-                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-gold/65 w-24 flex-shrink-0">
+                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-gold/70 w-24 flex-shrink-0 text-cinematic">
                     {k}
                   </span>
-                  <span className="font-sans text-[12px] text-ivory/90 font-normal">{v}</span>
+                  <span className="font-sans text-[12px] text-ivory/95 font-normal text-cinematic">{v}</span>
                 </div>
               ))}
             </div>

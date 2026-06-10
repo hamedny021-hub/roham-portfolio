@@ -42,7 +42,7 @@ export default function ExperienceSection() {
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
     >
       {/* 05-tamping.MP4 */}
-      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.46} warmTint />
+      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.32} warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
@@ -59,7 +59,7 @@ export default function ExperienceSection() {
           </div>
         </SectionReveal>
 
-        <SectionReveal delay={0.1}>
+        <SectionReveal delay={0.1} blur>
           <h2
             className="section-title text-ivory mb-14"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.6rem)" }}
@@ -81,16 +81,16 @@ export default function ExperienceSection() {
               transition={{ duration: 1.0, delay: 0.15 + i * 0.1, ease: EASE }}
             >
               {/* Period */}
-              <span className="font-sans text-[9px] tracking-[0.2em] text-gold/70 w-28 flex-shrink-0">
+              <span className="font-sans text-[9px] tracking-[0.2em] text-gold/75 w-28 flex-shrink-0 text-cinematic">
                 {job.period}
               </span>
 
               {/* Role + venue */}
               <div>
-                <p className="font-brand font-semibold text-base md:text-lg text-white leading-tight">
+                <p className="font-brand font-semibold text-base md:text-lg text-white leading-tight text-cinematic-strong">
                   {job.role}
                 </p>
-                <p className="font-sans text-[11px] text-ivory/78 font-normal mt-0.5 tracking-[0.02em]">
+                <p className="font-sans text-[11px] text-ivory/80 font-normal mt-0.5 tracking-[0.02em] text-cinematic">
                   {job.company} · {job.location}
                 </p>
               </div>
@@ -114,16 +114,16 @@ export default function ExperienceSection() {
           ].map(([n, l]) => (
             <div key={l} className="flex flex-col gap-1">
               <span className="font-brand font-bold text-xl gold-shimmer leading-none">{n}</span>
-              <span className="font-sans text-[8px] tracking-[0.3em] uppercase text-ivory/55">{l}</span>
+              <span className="font-sans text-[8px] tracking-[0.3em] uppercase text-ivory/60 text-cinematic">{l}</span>
             </div>
           ))}
 
           {/* Education — inline, minimal */}
           <div className="hidden md:flex flex-col gap-1 ml-4 pl-8 border-l border-white/6">
-            <span className="font-sans font-light text-sm text-ivory/78 leading-tight">
+            <span className="font-sans font-light text-sm text-ivory/82 leading-tight text-cinematic">
               Hotel Management
             </span>
-            <span className="font-sans text-[8px] tracking-[0.2em] uppercase text-ivory/55">
+            <span className="font-sans text-[8px] tracking-[0.2em] uppercase text-ivory/60 text-cinematic">
               University of Tehran · 2019–2023
             </span>
           </div>

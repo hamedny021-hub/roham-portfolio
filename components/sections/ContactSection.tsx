@@ -92,7 +92,7 @@ export default function ContactSection() {
       ───────────────────────────────────────────────────────────────────── */}
       <div className="relative z-30 w-full px-8 md:px-16 pb-20 md:pb-28 flex flex-col items-center text-center">
 
-        <SectionReveal>
+        <SectionReveal blur>
           <h2
             className="section-title text-ivory mb-2"
             style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)" }}
@@ -104,7 +104,7 @@ export default function ContactSection() {
         </SectionReveal>
 
         <SectionReveal delay={0.1}>
-          <p className="font-sans text-[9px] tracking-[0.42em] uppercase text-ivory/28 mt-3 mb-10 md:mb-14">
+          <p className="font-sans text-[9px] tracking-[0.42em] uppercase text-ivory/45 mt-3 mb-10 md:mb-14 text-cinematic">
             Open to café consulting · barista roles · creative collaborations
           </p>
         </SectionReveal>

@@ -26,7 +26,7 @@ export default function SkillsSection() {
       className="relative min-h-screen flex items-end md:items-center overflow-hidden bg-ink"
     >
       {/* 04-portafilter hand.MP4 — space in filename encoded as %20 */}
-      <VideoBackground src="/videos/04-portafilter%20hand.MP4" darkness={0.42} warmTint />
+      <VideoBackground src="/videos/04-portafilter%20hand.MP4" darkness={0.28} warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
@@ -38,7 +38,7 @@ export default function SkillsSection() {
       <div className="relative z-30 w-full px-5 md:px-16 py-8 md:py-0">
         <div className="glass-card-warm p-5 md:p-11 max-w-xs md:max-w-sm">
 
-          <SectionReveal>
+          <SectionReveal blur>
             <div className="section-label mb-5 md:mb-9">
               <span>03 — Skills</span>
               <div className="gold-line" />
@@ -49,14 +49,14 @@ export default function SkillsSection() {
             {disciplines.map((d, di) => (
               <SectionReveal key={d.cat} delay={0.1 + di * 0.1}>
                 <div>
-                  <p className="font-sans text-[8px] tracking-[0.45em] uppercase text-gold/85 mb-4">
+                  <p className="font-sans text-[8px] tracking-[0.45em] uppercase text-gold/85 mb-4 text-cinematic">
                     {d.cat}
                   </p>
                   <div className="flex flex-col gap-2.5">
                     {d.items.map(item => (
                       <p
                         key={item}
-                        className="font-sans text-[12px] text-ivory/92 font-normal tracking-[0.02em]"
+                        className="font-sans text-[12px] text-ivory/95 font-normal tracking-[0.02em] text-cinematic"
                       >
                         {item}
                       </p>

@@ -49,7 +49,7 @@ export default function ServicesSection() {
           </div>
         </SectionReveal>
 
-        <SectionReveal delay={0.1}>
+        <SectionReveal delay={0.1} blur>
           <h2
             className="section-title text-ivory mb-14 md:mb-16"
             style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)" }}
@@ -74,10 +74,10 @@ export default function ServicesSection() {
                 {o.n}
               </span>
               <div>
-                <p className="font-brand font-semibold text-xl md:text-2xl text-ivory/85 leading-tight mb-1.5">
+                <p className="font-brand font-semibold text-xl md:text-2xl text-ivory/95 leading-tight mb-1.5 text-cinematic-strong">
                   {o.title}
                 </p>
-                <p className="font-sans text-[11px] tracking-[0.12em] text-ivory/28 font-light">
+                <p className="font-sans text-[11px] tracking-[0.12em] text-ivory/55 font-normal text-cinematic">
                   {o.note}
                 </p>
               </div>
