@@ -66,24 +66,31 @@ export default function AboutSection() {
             </p>
           </SectionReveal>
 
-          {/* Key facts — compact */}
-          <SectionReveal delay={0.3}>
-            <div className="flex flex-col gap-2 mb-5 border-t border-white/6 pt-4 md:gap-3 md:mb-8 md:pt-6">
-              {[
-                ["Location",   "Toronto, Ontario"],
-                ["Experience", "7+ Years"],
-                ["Languages",  "English · Farsi"],
-                ["Education",  "Associate Degree in Hotel Management"],
-              ].map(([k, v]) => (
-                <div key={k} className="flex items-baseline gap-4">
-                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-gold/70 w-24 flex-shrink-0 text-cinematic">
-                    {k}
-                  </span>
-                  <span className="font-sans text-[12px] text-ivory/95 font-normal text-cinematic">{v}</span>
-                </div>
-              ))}
-            </div>
-          </SectionReveal>
+          {/* Key facts — each row reveals on its own beat, hover sharpens it */}
+          <div className="flex flex-col gap-2 mb-5 border-t border-white/6 pt-4 md:gap-3 md:mb-8 md:pt-6">
+            {[
+              ["Location",   "Toronto, Ontario"],
+              ["Experience", "7+ Years"],
+              ["Languages",  "English · Farsi"],
+              ["Education",  "Associate Degree in Hotel Management"],
+            ].map(([k, v], i) => (
+              <motion.div
+                key={k}
+                className="flex items-baseline gap-4 group cursor-default"
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.8, delay: 0.3 + i * 0.09, ease: EASE }}
+              >
+                <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-gold/70 group-hover:text-gold transition-colors duration-400 w-24 flex-shrink-0 text-cinematic">
+                  {k}
+                </span>
+                <span className="font-sans text-[12px] text-ivory/95 group-hover:text-white transition-colors duration-400 font-normal text-cinematic">
+                  {v}
+                </span>
+              </motion.div>
+            ))}
+          </div>
 
           {/* CTAs */}
           <SectionReveal delay={0.4}>

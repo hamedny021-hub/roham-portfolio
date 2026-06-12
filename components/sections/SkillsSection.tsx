@@ -1,7 +1,10 @@
 "use client";
 
+import { motion }      from "framer-motion";
 import SectionReveal   from "@/components/ui/SectionReveal";
 import VideoBackground from "@/components/ui/VideoBackground";
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 // Three disciplines — no bars, no percentages. The hands tell the story.
 const disciplines = [
@@ -47,23 +50,47 @@ export default function SkillsSection() {
 
           <div className="flex flex-col gap-5 md:gap-9">
             {disciplines.map((d, di) => (
-              <SectionReveal key={d.cat} delay={0.1 + di * 0.1}>
-                <div>
-                  <p className="font-sans text-[8px] tracking-[0.45em] uppercase text-gold/85 mb-4 text-cinematic">
+              <div key={d.cat}>
+                {/* Category label + expanding gold rule */}
+                <motion.div
+                  className="flex items-center gap-3 mb-4"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.8, delay: 0.1 + di * 0.12, ease: EASE }}
+                >
+                  <p className="font-sans text-[8px] tracking-[0.45em] uppercase text-gold/85 text-cinematic">
                     {d.cat}
                   </p>
-                  <div className="flex flex-col gap-2.5">
-                    {d.items.map(item => (
-                      <p
-                        key={item}
-                        className="font-sans text-[12px] text-ivory/95 font-normal tracking-[0.02em] text-cinematic"
-                      >
+                  <motion.span
+                    className="block h-px flex-1 max-w-[40px] origin-left"
+                    style={{ background: "linear-gradient(90deg, rgba(212,168,67,0.4), transparent)" }}
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    transition={{ duration: 0.9, delay: 0.25 + di * 0.12, ease: EASE }}
+                  />
+                </motion.div>
+
+                {/* Skills — each item lands on its own beat, dash extends on hover */}
+                <div className="flex flex-col gap-2.5">
+                  {d.items.map((item, ii) => (
+                    <motion.div
+                      key={item}
+                      className="flex items-center gap-3 group cursor-default"
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-30px" }}
+                      transition={{ duration: 0.7, delay: 0.18 + di * 0.12 + ii * 0.07, ease: EASE }}
+                    >
+                      <span className="block h-px w-3 flex-shrink-0 bg-gold/45 group-hover:w-5 group-hover:bg-gold transition-all duration-400" />
+                      <p className="font-sans text-[12px] text-ivory/95 group-hover:text-white font-normal tracking-[0.02em] text-cinematic transition-colors duration-400">
                         {item}
                       </p>
-                    ))}
-                  </div>
+                    </motion.div>
+                  ))}
                 </div>
-              </SectionReveal>
+              </div>
             ))}
           </div>
         </div>

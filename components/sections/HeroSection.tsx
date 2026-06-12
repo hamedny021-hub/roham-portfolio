@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState }                          from "react";
-import { motion, useScroll, useTransform, useReducedMotion }    from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 
 // Expo-out easing — the luxury / Apple motion language
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -40,6 +47,23 @@ export default function HeroSection() {
   const contentY       = useTransform(scrollYProgress, [0.4, 1],        ["0%", "-5%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.60, 0.95], [1, 1, 0]);
   const curtainOpacity = useTransform(scrollYProgress, [0.60, 0.95],    [0, 0.65]);
+
+  // ── Pointer drift — desktop-only depth while the hero rests ─────────
+  // Video and content drift in opposite directions (±8px / ∓5px) on a
+  // soft spring, so the frozen final frame still feels alive. The 1.08
+  // overscan (29px headroom) fully absorbs the 8px video drift.
+  const pointerX      = useMotionValue(0); // normalized -1 … 1
+  const videoDriftX   = useSpring(useTransform(pointerX, v => v * 8),  { stiffness: 45, damping: 18 });
+  const contentDriftX = useSpring(useTransform(pointerX, v => v * -5), { stiffness: 45, damping: 18 });
+
+  useEffect(() => {
+    if (pRM || !window.matchMedia("(pointer: fine)").matches) return;
+    const onMove = (e: MouseEvent) => {
+      pointerX.set((e.clientX / window.innerWidth) * 2 - 1);
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [pRM, pointerX]);
 
   // ── Video lifecycle — same pattern as VideoBackground ───────────────
   // IntersectionObserver restarts playback from frame 0 every time the
@@ -103,7 +127,7 @@ export default function HeroSection() {
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1000ms] ease-in-out ${
           ready ? "opacity-100" : "opacity-0"
         }`}
-        style={{ objectPosition: "center 40%", y: videoY, scale: 1.08 }}
+        style={{ objectPosition: "center 40%", x: videoDriftX, y: videoY, scale: 1.08 }}
         muted
         playsInline
         preload="auto"
@@ -155,7 +179,7 @@ export default function HeroSection() {
       ─────────────────────────────────────────────────────────────────── */}
       <motion.div
         className="absolute inset-0 z-20 flex items-end"
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={{ x: contentDriftX, y: contentY, opacity: contentOpacity }}
       >
         <div className="w-full px-8 md:px-16 pb-20 md:pb-24">
 

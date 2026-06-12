@@ -66,22 +66,26 @@ export default function ServicesSection() {
           {offerings.map((o, i) => (
             <motion.div
               key={o.n}
-              className="flex items-start gap-7 group"
+              className="flex items-start gap-7 group cursor-default"
               initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
+              whileHover={{ x: 6 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 1.0, delay: 0.2 + i * 0.12, ease: EASE }}
             >
-              <span className="font-accent text-4xl font-bold text-gold/10 group-hover:text-gold/20 transition-colors duration-500 leading-none mt-1 select-none">
+              {/* Ghost number ignites on hover */}
+              <span className="font-accent text-4xl font-bold text-gold/10 group-hover:text-gold/40 transition-colors duration-500 leading-none mt-1 select-none">
                 {o.n}
               </span>
               <div>
-                <p className="font-brand font-semibold text-xl md:text-2xl text-ivory/95 leading-tight mb-1.5 text-cinematic-strong">
+                <p className="font-brand font-semibold text-xl md:text-2xl text-ivory/95 group-hover:text-white leading-tight mb-1.5 text-cinematic-strong transition-colors duration-400">
                   {o.title}
                 </p>
-                <p className="font-sans text-[11px] tracking-[0.12em] text-ivory/55 font-normal text-cinematic">
+                <p className="font-sans text-[11px] tracking-[0.12em] text-ivory/55 group-hover:text-ivory/75 font-normal text-cinematic transition-colors duration-400">
                   {o.note}
                 </p>
+                {/* Gold hairline draws in under the row on hover */}
+                <span className="block h-px w-12 mt-2.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-expo bg-gradient-to-r from-gold/70 to-transparent" />
               </div>
             </motion.div>
           ))}

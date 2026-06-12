@@ -70,19 +70,40 @@ export default function ExperienceSection() {
           </h2>
         </SectionReveal>
 
-        {/* Timeline — minimal chronological list, no bullets */}
-        <div className="flex flex-col gap-0 max-w-xl mb-12">
+        {/* Timeline — a gold line draws down through the years; each role is
+            a node on it. The current position pulses quietly. */}
+        <div className="relative max-w-xl mb-12 pl-7">
+
+          {/* The line — draws top-to-bottom as the timeline enters view */}
+          <motion.div
+            className="absolute left-[2px] top-3 bottom-5 w-px origin-top"
+            style={{ background: "linear-gradient(to bottom, rgba(212,168,67,0.55), rgba(212,168,67,0.10))" }}
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 1.6, delay: 0.25, ease: EASE }}
+          />
+
           {jobs.map((job, i) => (
             <motion.div
               key={job.company}
-              className="flex items-baseline gap-6 md:gap-10 py-5 border-b border-white/5 last:border-none"
+              className="relative flex items-baseline gap-6 md:gap-10 py-5 border-b border-white/5 last:border-none group cursor-default"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ x: 4 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 1.0, delay: 0.15 + i * 0.1, ease: EASE }}
+              transition={{ duration: 1.0, delay: 0.3 + i * 0.12, ease: EASE }}
             >
+              {/* Node — current role (first entry) pulses gold */}
+              <span
+                className={`absolute -left-7 top-[23px] block w-[5px] h-[5px] rounded-full ${
+                  i === 0 ? "bg-gold" : "bg-gold/35 group-hover:bg-gold/70"
+                } transition-colors duration-400`}
+                style={i === 0 ? { animation: "dotPulse 3s ease-in-out infinite" } : undefined}
+              />
+
               {/* Period */}
-              <span className="font-sans text-[9px] tracking-[0.2em] text-gold/75 w-28 flex-shrink-0 text-cinematic">
+              <span className="font-sans text-[9px] tracking-[0.2em] text-gold/75 group-hover:text-gold w-28 flex-shrink-0 text-cinematic transition-colors duration-400">
                 {job.period}
               </span>
 
@@ -91,7 +112,7 @@ export default function ExperienceSection() {
                 <p className="font-brand font-semibold text-base md:text-lg text-white leading-tight text-cinematic-strong">
                   {job.role}
                 </p>
-                <p className="font-sans text-[11px] text-ivory/80 font-normal mt-0.5 tracking-[0.02em] text-cinematic">
+                <p className="font-sans text-[11px] text-ivory/80 group-hover:text-ivory font-normal mt-0.5 tracking-[0.02em] text-cinematic transition-colors duration-400">
                   {job.company} · {job.location}
                 </p>
               </div>

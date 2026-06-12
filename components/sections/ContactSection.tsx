@@ -125,12 +125,12 @@ export default function ContactSection() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.9, delay: 0.2 + i * 0.08, ease: EASE }}
             >
-              {/* Icon: ivory/40 at rest → gold on hover */}
-              <span className="text-ivory/40 group-hover:text-gold transition-colors duration-400">
+              {/* Icon: lifts and glows gold on hover */}
+              <span className="text-ivory/45 group-hover:text-gold group-hover:-translate-y-1 group-hover:drop-shadow-[0_0_14px_rgba(212,168,67,0.45)] transition-all duration-400 ease-expo">
                 <s.Icon />
               </span>
               {/* Platform label */}
-              <span className="font-sans text-[8px] tracking-[0.38em] uppercase text-ivory/22 group-hover:text-gold/55 transition-colors duration-400">
+              <span className="font-sans text-[8px] tracking-[0.38em] uppercase text-ivory/35 group-hover:text-gold/70 transition-colors duration-400">
                 {s.label}
               </span>
             </motion.a>
