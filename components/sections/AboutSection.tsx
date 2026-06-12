@@ -18,6 +18,7 @@ export default function AboutSection() {
       <VideoBackground
         src="/videos/02-grinding.MP4"
         darkness={0.28}
+        position="center 45%"
         warmTint
       />
 

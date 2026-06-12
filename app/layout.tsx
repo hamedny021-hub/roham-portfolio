@@ -84,14 +84,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
-        {/* Breathing vignette — edges pulse gently so the frame feels alive */}
+        {/* Breathing vignette — edges pulse gently so the frame feels alive.
+            Kept light (0.20) so footage edges stay visible — video-first. */}
         <div
           aria-hidden="true"
           className="fixed inset-0 pointer-events-none"
           style={{
             zIndex: 9987,
             background:
-              "radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(5,5,5,0.32) 100%)",
+              "radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(5,5,5,0.20) 100%)",
             animation: "vignetteBreathe 8s ease-in-out infinite",
           }}
         />

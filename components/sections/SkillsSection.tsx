@@ -26,7 +26,7 @@ export default function SkillsSection() {
       className="relative min-h-screen flex items-end md:items-center overflow-hidden bg-ink"
     >
       {/* 04-portafilter hand.MP4 — space in filename encoded as %20 */}
-      <VideoBackground src="/videos/04-portafilter%20hand.MP4" darkness={0.28} warmTint />
+      <VideoBackground src="/videos/04-portafilter%20hand.MP4" darkness={0.28} position="center 40%" warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"

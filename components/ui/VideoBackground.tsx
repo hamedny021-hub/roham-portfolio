@@ -8,6 +8,9 @@ interface VideoBackgroundProps {
   darkness?: number;
   /** Subtle warm espresso tint over the footage */
   warmTint?: boolean;
+  /** CSS object-position — tune per section so the subject stays in frame
+      when object-cover crops (e.g. "center 35%" keeps a high subject visible). */
+  position?: string;
   className?: string;
 }
 
@@ -28,6 +31,7 @@ export default function VideoBackground({
   src,
   darkness = 0.38,
   warmTint = false,
+  position = "center",
   className = "",
 }: VideoBackgroundProps) {
   const videoRef          = useRef<HTMLVideoElement>(null);
@@ -75,17 +79,23 @@ export default function VideoBackground({
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
-      {/* Video — no loop, freezes on final frame */}
-      {/* scale-[0.88] on mobile = 12% zoom-out so more footage is visible.
-          md:scale-100 restores full-size on desktop — no change there.
-          CSS filter: boosts perceived brightness + colour richness so the
-          coffee/espresso detail reads on all screens, especially dark iPhones. */}
+      {/* Video — no loop, freezes on final frame.
+          NO transform scale: a scaled-down element does not reveal more
+          footage (object-cover crops against the layout box, then the
+          whole result shrinks, leaving hidden gaps at the edges). The
+          element renders 1:1 with the section so the footage is shown at
+          its natural cover framing — the least-cropped full-bleed option.
+          CSS filter boosts brightness + colour so coffee detail reads
+          on all screens, especially dark mobile panels. */}
       <video
         ref={videoRef}
-        className={`absolute inset-0 w-full h-full object-cover scale-[0.88] md:scale-100 transition-opacity duration-[1200ms] ease-in-out ${
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
           ready ? "opacity-100" : "opacity-0"
         }`}
-        style={{ filter: "brightness(1.35) contrast(1.08) saturate(1.10)" }}
+        style={{
+          objectPosition: position,
+          filter: "brightness(1.35) contrast(1.08) saturate(1.10)",
+        }}
         muted
         playsInline
         preload="none"

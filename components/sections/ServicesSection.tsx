@@ -32,7 +32,9 @@ export default function ServicesSection() {
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
     >
       {/* 03-portafilter.MP4 */}
-      <VideoBackground src="/videos/03-portafilter.MP4" darkness={0.32} warmTint />
+      {/* Content sits bottom-left over a bottom gradient — bias the visible
+          window upward so the portafilter subject stays in the clear zone */}
+      <VideoBackground src="/videos/03-portafilter.MP4" darkness={0.32} position="center 40%" warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"

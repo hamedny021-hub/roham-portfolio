@@ -36,7 +36,7 @@ export default function HeroSection() {
   });
 
   // ── Parallax (late-activating — only fire when user is leaving) ─────
-  const videoY         = useTransform(scrollYProgress, [0, 1],          ["0%", "-5%"]);
+  const videoY         = useTransform(scrollYProgress, [0, 1],          ["0%", "-4%"]);
   const contentY       = useTransform(scrollYProgress, [0.4, 1],        ["0%", "-5%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.60, 0.95], [1, 1, 0]);
   const curtainOpacity = useTransform(scrollYProgress, [0.60, 0.95],    [0, 0.65]);
@@ -95,13 +95,15 @@ export default function HeroSection() {
       {/* ── VIDEO ──────────────────────────────────────────────────────── */}
       {/* IntersectionObserver (above) handles play/pause/restart.
           No autoPlay — observer fires on mount since Hero is above fold,
-          and restarts on every re-entry so scroll-back always replays. */}
+          and restarts on every re-entry so scroll-back always replays.
+          scale 1.08 = minimum overscan for the -4% parallax shift.
+          (Was 1.18 — an extra 18% zoom that cropped the bean footage hard.) */}
       <motion.video
         ref={videoRef}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1000ms] ease-in-out ${
           ready ? "opacity-100" : "opacity-0"
         }`}
-        style={{ objectPosition: "center 40%", y: videoY, scale: 1.18 }}
+        style={{ objectPosition: "center 40%", y: videoY, scale: 1.08 }}
         muted
         playsInline
         preload="auto"

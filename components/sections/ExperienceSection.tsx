@@ -42,7 +42,8 @@ export default function ExperienceSection() {
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-ink"
     >
       {/* 05-tamping.MP4 */}
-      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.32} warmTint />
+      {/* Heavy bottom content (timeline) — keep the tamping action high in frame */}
+      <VideoBackground src="/videos/05-tamping.MP4" darkness={0.32} position="center 38%" warmTint />
 
       <div
         className="absolute top-0 inset-x-0 h-48 z-20 pointer-events-none"
